@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text } from "react-native";
+import Card from "./Card";
+import Control from "./Control";
 
 const MainScreen = () => {
   return (
-    <View>
-      <Text>MainScreen</Text>
+    <View style={{}}>
+      <Card />
+      <Control />
     </View>
   );
 };
