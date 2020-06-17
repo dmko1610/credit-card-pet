@@ -4,10 +4,14 @@ import { View, Text, Dimensions } from "react-native";
 const Card = () => {
   const phoneWidth = Math.round(Dimensions.get("screen").width);
   return (
-    <View style={{ padding: 20 }}>
+    <View
+      style={{
+        padding: 20,
+        
+      }}
+    >
       <View
         style={{
-          zIndex: 50,
           backgroundColor: "green",
           width: phoneWidth - 40,
           height: 200,
