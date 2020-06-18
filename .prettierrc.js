@@ -3,4 +3,5 @@ module.exports = {
   jsxBracketSameLine: false,
   singleQuote: false,
   trailingComma: "all",
+  semicolor: true
 };
