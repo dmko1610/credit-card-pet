@@ -1,12 +1,12 @@
 import React from "react";
-import Card from "./Card";
-import Control from "./Control";
+import Card from "../components/Card";
+import Control from "../components/Control";
 
 const MainScreen = () => {
   return (
     <>
       <Card />
-      <Control />
+      {/* <Control /> */}
     </>
   );
 };
