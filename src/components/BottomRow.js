@@ -9,32 +9,29 @@ const ExpireDate = (style) => {
   return <Text {...style}>04/21</Text>;
 };
 
-const Left = () => {
-  const { commonText, placeholder } = bottomRowStyle;
+const ExpirationBlock = () => {
+  const {
+    commonText,
+    expireDate,
+    expirationBlockTitle,
+    expirationBlockContainer,
+  } = bottomRowStyle;
   return (
-    <View>
-      <Text style={commonText}>Cardholder Name</Text>
-      <CardholderName style={StyleSheet.flatten([commonText, placeholder])} />
-    </View>
-  );
-};
-
-const Right = () => {
-  const { commonText, expireDate } = bottomRowStyle;
-  return (
-    <View>
-      <Text style={commonText}>Expires</Text>
+    <View style={expirationBlockContainer}>
+      <Text style={StyleSheet.flatten([commonText, expirationBlockTitle])}>
+        month/year
+      </Text>
       <ExpireDate style={StyleSheet.flatten([commonText, expireDate])} />
     </View>
   );
 };
 
 const BottomRow = () => {
-  const { bottomRowContainer } = bottomRowStyle;
+  const { commonText, cardholder, bottomRowContainer } = bottomRowStyle;
   return (
     <View style={bottomRowContainer}>
-      <Left />
-      <Right />
+      <CardholderName style={StyleSheet.flatten([commonText, cardholder])} />
+      <ExpirationBlock />
     </View>
   );
 };
@@ -46,18 +43,26 @@ const bottomRowStyle = StyleSheet.create({
     justifyContent: "space-between",
     margin: 10,
   },
-  placeholder: {
+  cardholder: {
     fontSize: 20,
     letterSpacing: 5,
-    paddingTop: 5,
+    paddingBottom: 5,
+    alignSelf: "flex-end",
   },
   expireDate: {
     fontSize: 17,
     letterSpacing: 2,
-    paddingTop: 10,
+    paddingBottom: 5,
   },
   commonText: {
     color: "white",
+  },
+  expirationBlockTitle: {
+    fontSize: 7,
+    letterSpacing: 2,
+  },
+  expirationBlockContainer: {
+    alignSelf: "flex-end",
   },
 });
 

@@ -1,19 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const BankIdentificationNumber = () => {
-  return <Text>1234 56</Text>;
+const BankIdentificationNumber = (style) => {
+  return <Text {...style}>1234 56</Text>;
 };
 
-const AccountIdentifierNumber = () => {
-  return <Text>78 9876 5432</Text>;
+const AccountIdentifierNumber = (style) => {
+  return <Text {...style}>78 9876 5432</Text>;
 };
 
 const MiddleRow = () => {
+  const { middleRowContainer, number } = middleRowStyle;
   return (
-    <View style={middleRowStyle.middleRowContainer}>
-      <BankIdentificationNumber />
-      <AccountIdentifierNumber />
+    <View style={middleRowContainer}>
+      <BankIdentificationNumber style={number} />
+      <AccountIdentifierNumber style={number} />
     </View>
   );
 };
@@ -23,6 +24,13 @@ const middleRowStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+  },
+  number: {
+    letterSpacing: 2,
+    color: "white",
+    fontSize: 25,
+    fontFamily: "monospace",
   },
 });
 
