@@ -1,10 +1,10 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MainScreen from "../src/screens/MainScreen";
+import Card from "../../src/components/Card";
 
 describe("Card Creation", () => {
   it("Render component", () => {
-    const tree = renderer.create(<MainScreen />).toJSON();
+    const tree = renderer.create(<Card />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

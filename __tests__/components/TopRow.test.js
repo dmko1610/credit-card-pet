@@ -1,10 +1,11 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MainScreen from "../src/screens/MainScreen";
 
-describe("Card Creation", () => {
+import TopRow from "../../src/components/TopRow";
+
+describe("Top Row Creation", () => {
   it("Render component", () => {
-    const tree = renderer.create(<MainScreen />).toJSON();
+    const tree = renderer.create(<TopRow />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

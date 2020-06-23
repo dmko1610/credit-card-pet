@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Middle Row Creation Render component 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "center",
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "white",
+        "fontFamily": "monospace",
+        "fontSize": 25,
+        "letterSpacing": 2,
+      }
+    }
+  >
+    1234 56
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "white",
+        "fontFamily": "monospace",
+        "fontSize": 25,
+        "letterSpacing": 2,
+      }
+    }
+  >
+    78 9876 5432
+  </Text>
+</View>
+`;

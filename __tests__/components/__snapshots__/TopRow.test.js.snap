@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Top Row Creation Render component 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "margin": 10,
+    }
+  }
+>
+  <Image
+    source={
+      Object {
+        "testUri": "../../../src/assets/hologram.png",
+      }
+    }
+    style={
+      Object {
+        "height": 50,
+        "width": 50,
+      }
+    }
+  />
+  <Image
+    source={
+      Object {
+        "testUri": "../../../src/assets/mastercard.png",
+      }
+    }
+    style={
+      Object {
+        "height": 60,
+        "width": 60,
+      }
+    }
+  />
+</View>
+`;

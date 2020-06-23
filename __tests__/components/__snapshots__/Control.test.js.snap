@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Control Creation Render component 1`] = `
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "borderColor": "gray",
+      "borderRadius": 12,
+      "borderTopColor": "transparent",
+      "borderTopWidth": 0,
+      "borderWidth": 1,
+      "height": 1000.5,
+      "position": "absolute",
+      "top": 150,
+      "width": 730,
+    }
+  }
+/>
+`;
