@@ -3,18 +3,22 @@ import { View, Dimensions, Text, StyleSheet, TextInput } from "react-native";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
+let inputs = [React.createRef()];
 
 const CardNumber = () => {
   return (
     <TextInput
-      value="Card Number"
+      placeholder="Card Number"
       style={{
         borderWidth: 0.5,
         borderColor: "gray",
         marginHorizontal: 15,
         borderRadius: 5,
-        marginTop: 5
+        marginTop: 5,
+        marginVertical: 20,
       }}
+      keyboardType={"decimal-pad"}
+      onSubmitEditing={() => inputs.focus()}
     />
   );
 };
@@ -22,13 +26,16 @@ const CardNumber = () => {
 const CardholderName = () => {
   return (
     <TextInput
-      value="Cardholder Name"
+      placeholder="Cardholder Name"
       style={{
         borderWidth: 0.5,
         borderColor: "gray",
         marginHorizontal: 15,
         borderRadius: 5,
+        marginVertical: 20,
       }}
+      ref={(input) => inputs.push(input)}
+      onSubmitEditing={() => inputs.focus()}
     />
   );
 };
@@ -42,7 +49,9 @@ const ExpireDate = () => {
         borderColor: "gray",
         marginHorizontal: 15,
         borderRadius: 5,
+        marginVertical: 20,
       }}
+      ref={(input) => (inputs.push(input))}
     />
   );
 };
@@ -69,7 +78,7 @@ const controlStyles = StyleSheet.create({
     backgroundColor: "white",
     elevation: 5,
     alignSelf: "center",
-    justifyContent: "space-around",
+    justifyContent: "center",
   },
 });
 

@@ -1,14 +1,21 @@
 import React from "react";
 import Card from "../components/Card";
 import Control from "../components/Control";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 
 const MainScreen = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "flex-start", margin: 10}}>
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        justifyContent: "flex-start",
+        margin: 10,
+      }}
+      scrollEnabled
+    >
       <Card />
       <Control />
-    </View>
+    </ScrollView>
   );
 };
 
