@@ -55,7 +55,7 @@ const bottomRowStyle = StyleSheet.create({
     paddingBottom: 5,
   },
   commonText: {
-    color: "white",
+    color: "black",
   },
   expirationBlockTitle: {
     fontSize: 7,

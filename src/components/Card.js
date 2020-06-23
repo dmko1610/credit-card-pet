@@ -1,28 +1,39 @@
 import React from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions, StyleSheet, ImageBackground } from "react-native";
 import TopRow from "./TopRow";
 import MiddleRow from "./MiddleRow";
 import BottomRow from "./BottomRow";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
+const abstract = require("../assets/abstract.jpg");
+const tree = require("../assets/tree.jpg");
 
 const Card = () => {
   return (
-    <View style={crediCardStyle.cardContainer}>
+    <ImageBackground
+      source={abstract}
+      style={crediCardStyle.cardContainer}
+      imageStyle={crediCardStyle.image}
+    >
       <TopRow />
       <MiddleRow />
       <BottomRow />
-    </View>
+    </ImageBackground>
   );
 };
 
 const crediCardStyle = StyleSheet.create({
   cardContainer: {
-    backgroundColor: "green",
-    width: phoneWidth - 40,
+    width: phoneWidth - 60,
     height: 200,
-    borderRadius: 15,
-    alignSelf: "center"
+    borderRadius: 17,
+    elevation: 17,
+    alignSelf: "center",
+  },
+  image: {
+    borderRadius: 17,
+    borderColor: "gray",
+    borderWidth: 0.3,
   },
 });
 

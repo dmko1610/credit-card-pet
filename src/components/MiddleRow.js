@@ -28,7 +28,7 @@ const middleRowStyle = StyleSheet.create({
   },
   number: {
     letterSpacing: 2,
-    color: "white",
+    color: "black",
     fontSize: 25,
     fontFamily: "monospace",
   },
