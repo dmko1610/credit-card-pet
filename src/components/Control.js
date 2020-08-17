@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Dimensions, Text, StyleSheet, TextInput } from "react-native";
+import { View, Dimensions, StyleSheet, TextInput } from "react-native";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
-let inputs = [React.createRef()];
+// let inputs = [React.createRef()];
 
 const CardNumber = () => {
   return (
@@ -18,7 +18,6 @@ const CardNumber = () => {
         marginVertical: 20,
       }}
       keyboardType={"decimal-pad"}
-      onSubmitEditing={() => inputs.focus()}
     />
   );
 };
@@ -34,8 +33,6 @@ const CardholderName = () => {
         borderRadius: 5,
         marginVertical: 20,
       }}
-      ref={(input) => inputs.push(input)}
-      onSubmitEditing={() => inputs.focus()}
     />
   );
 };
@@ -51,7 +48,6 @@ const ExpireDate = () => {
         borderRadius: 5,
         marginVertical: 20,
       }}
-      ref={(input) => (inputs.push(input))}
     />
   );
 };
