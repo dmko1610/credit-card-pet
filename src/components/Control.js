@@ -1,21 +1,41 @@
-import React from "react";
-import { View, Dimensions, StyleSheet, TextInput } from "react-native";
+/* eslint-disable no-extra-boolean-cast */
+import React, { useState } from "react";
+import {
+  View,
+  Dimensions,
+  StyleSheet,
+  TextInput,
+  TouchableNativeFeedback,
+  Text,
+} from "react-native";
+import { Picker } from "react-native-wheel-pick";
+import ScrollPicker from "react-native-wheel-scroll-picker";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const years = [];
 
 const CardNumber = () => {
   return (
     <TextInput
       placeholder="Card Number"
-      style={{
-        borderWidth: 0.5,
-        borderColor: "gray",
-        marginHorizontal: 15,
-        borderRadius: 5,
-        marginTop: 5,
-        marginVertical: 20,
-      }}
+      placeholderTextColor="#b7b7b7"
+      style={StyleSheet.flatten([controlStyles.inputStyle, { marginTop: 5 }])}
       keyboardType={"decimal-pad"}
     />
   );
@@ -25,28 +45,101 @@ const CardholderName = () => {
   return (
     <TextInput
       placeholder="Cardholder Name"
-      style={{
-        borderWidth: 0.5,
-        borderColor: "gray",
-        marginHorizontal: 15,
-        borderRadius: 5,
-        marginVertical: 20,
-      }}
+      placeholderTextColor="#b7b7b7"
+      style={controlStyles.inputStyle}
     />
   );
 };
 
-const ExpireDate = () => {
+const ExpireMonth = () => {
+  const [date, setDate] = useState(new Date());
+  const [month, setMonth] = useState("");
+  const [isPressed, setIsPressed] = useState(false);
+  console.log("Dada ", date);
+  return (
+    <>
+      <View style={StyleSheet.flatten([controlStyles.inputStyle, { flex: 1 }])}>
+        <TouchableNativeFeedback
+          onPress={() => setIsPressed(true)}
+          background={TouchableNativeFeedback.Ripple("lightgrey", false)}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ paddingTop: 12, paddingLeft: 4, color: "#b7b7b7" }}>
+              {month}
+            </Text>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+      {isPressed && (
+        <Picker
+          style={{ backgroundColor: "white", width: 300, height: 215 }}
+          selectedItem="January"
+          onValueChange={(value) => {
+            setIsPressed(false);
+            setMonth(value);
+          }}
+          pickerData={months}
+          itemSpace={40}
+          onPress={() => console.log("perss")}
+        />
+      )}
+    </>
+  );
+};
+
+const ExpireYear = () => {
+  const [date, setDate] = useState(new Date());
+  const [month, setMonth] = useState("");
+  const [isPressed, setIsPressed] = useState(false);
+  return (
+    <>
+      <View style={StyleSheet.flatten([controlStyles.inputStyle, { flex: 1 }])}>
+        <TouchableNativeFeedback
+          onPress={() => setIsPressed(true)}
+          background={TouchableNativeFeedback.Ripple("lightgrey", false)}
+        >
+          <View style={{ flex: 1 }}>
+            <Text style={{ paddingTop: 12, paddingLeft: 4, color: "#b7b7b7" }}>
+              {month}
+            </Text>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
+      {isPressed && (
+        <ScrollPicker
+          dataSource={months}
+          renderItem={(data, index, isSelected) => {
+            return;
+          }}
+          wrapperHeight={180}
+          wrapperWidth={150}
+          wrapperBackground={"#FFFFFF"}
+          itemHeight={60}
+          highlightColor={"#d8d8d8"}
+          highlightBorderWidth={2}
+          activeItemColor={"#222121"}
+          itemColor={"#B4B4B4"}
+
+          /*   onValueChange={(value) => {
+            setIsPressed(false);
+            setMonth(value);
+          }}
+          pickerData={months}
+          itemSpace={40}
+          onPress={() => console.log("perss")} */
+        />
+      )}
+    </>
+  );
+};
+
+const SecurityCode = () => {
   return (
     <TextInput
-      value="Card Name"
-      style={{
-        borderWidth: 0.5,
-        borderColor: "gray",
-        marginHorizontal: 15,
-        borderRadius: 5,
-        marginVertical: 20,
-      }}
+      style={StyleSheet.flatten([controlStyles.inputStyle, { width: 90 }])}
+      placeholder="CVV"
+      placeholderTextColor="#b7b7b7"
+      keyboardType={"decimal-pad"}
     />
   );
 };
@@ -56,7 +149,11 @@ const Control = () => {
     <View style={controlStyles.container}>
       <CardNumber />
       <CardholderName />
-      <ExpireDate />
+      <View style={{ flexDirection: "row" }}>
+        <ExpireMonth />
+        <ExpireYear />
+        <SecurityCode />
+      </View>
     </View>
   );
 };
@@ -74,6 +171,19 @@ const controlStyles = StyleSheet.create({
     elevation: 5,
     alignSelf: "center",
     justifyContent: "center",
+  },
+  inputStyle: {
+    borderWidth: 0.5,
+    borderColor: "gray",
+    marginHorizontal: 15,
+    borderRadius: 5,
+    marginVertical: 20,
+  },
+  datePickerStyle: {
+    color: "#b7b7b7",
+    fontSize: 14,
+    paddingLeft: 4,
+    paddingVertical: 15,
   },
 });
 
