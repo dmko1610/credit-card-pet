@@ -1,12 +1,12 @@
 import React from "react";
-import { View, Dimensions, StyleSheet, ImageBackground } from "react-native";
+import { Dimensions, StyleSheet, ImageBackground } from "react-native";
 import TopRow from "./TopRow";
 import MiddleRow from "./MiddleRow";
 import BottomRow from "./BottomRow";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const abstract = require("../assets/abstract.jpg");
-const tree = require("../assets/tree.jpg");
+// const tree = require("../assets/tree.jpg");
 
 const Card = () => {
   return (

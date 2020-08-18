@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "../components/Card";
 import Control from "../components/Control";
-import { View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 
 const MainScreen = () => {
   return (

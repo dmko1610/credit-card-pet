@@ -3,7 +3,6 @@ import { View, Dimensions, StyleSheet, TextInput } from "react-native";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
-// let inputs = [React.createRef()];
 
 const CardNumber = () => {
   return (

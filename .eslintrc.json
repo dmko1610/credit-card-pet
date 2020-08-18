@@ -2,22 +2,33 @@
   "env": {
     "browser": true,
     "es2020": true,
-    "react-native/react-native": true
+    "react-native/react-native": true,
+    "mocha": true,
+    "jest": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     },
-    "ecmaVersion": 11
+    "ecmaVersion": 11,
+    "sourceType": "module"
   },
-  "plugins": ["react", "react-native"],
+  "plugins": ["react", "react-native", "import"],
   "rules": {
-    "indent": ["error", 4],
+    "indent": ["error", 2],
     "linebreak-style": ["error", "windows"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
-    "react-native/no-unused-styles": 2,
     "react-native/split-platform-components": 2
+  },
+  "settings": {
+    "import/ignore": ["react-native"]
   }
 }
