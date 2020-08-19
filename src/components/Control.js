@@ -8,9 +8,8 @@ import {
   TouchableNativeFeedback,
   Text,
 } from "react-native";
-import { Picker } from "react-native-wheel-pick";
-import ScrollPicker from "react-native-wheel-scroll-picker";
 import { Icon } from "native-base";
+import { Picker } from "react-native-wheel-pick";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
@@ -29,7 +28,16 @@ const months = [
   "December",
 ];
 
-const years = [];
+function getYears() {
+  const years = [];
+  const currentYear = new Date().getFullYear();
+  let i = 0;
+  while (i < 50) {
+    years.push(currentYear + i);
+    i++;
+  }
+  return years;
+}
 
 const CardNumber = () => {
   return (
@@ -53,10 +61,9 @@ const CardholderName = () => {
 };
 
 const ExpireMonth = () => {
-  const [date, setDate] = useState(new Date());
   const [month, setMonth] = useState("");
   const [isPressed, setIsPressed] = useState(false);
-  console.log("Dada ", date);
+
   return (
     <>
       <View style={StyleSheet.flatten([controlStyles.inputStyle, { flex: 1 }])}>
@@ -66,38 +73,39 @@ const ExpireMonth = () => {
         >
           <View style={{ flex: 1 }}>
             <Text style={{ paddingTop: 12, paddingLeft: 4, color: "#b7b7b7" }}>
-              {month}
+              {!!month ? month : "Expired Month"}
             </Text>
           </View>
         </TouchableNativeFeedback>
       </View>
       {isPressed && (
-        <>
-          <Picker
-            style={{ backgroundColor: "white", width: 300, height: 215 }}
-            selectedItem="January"
-            onValueChange={(value) => {
-              // setIsPressed(false);
-              setMonth(value);
-            }}
-            pickerData={months}
-            itemSpace={40}
-            onPress={() => console.log("perss")}
-          />
+        <View style={{ flexDirection: "row" }}>
           <Icon
             onPress={() => setIsPressed(false)}
+            style={{ fontSize: 30 }}
             type={"Entypo"}
             name="check"
           />
-        </>
+          <Picker
+            style={controlStyles.pickerStyle}
+            onValueChange={(value) => setMonth(value)}
+            pickerData={months}
+            itemSpace={40}
+          />
+          <Icon
+            onPress={() => setIsPressed(false)}
+            style={{ fontSize: 30 }}
+            type="Entypo"
+            name="cross"
+          />
+        </View>
       )}
     </>
   );
 };
 
 const ExpireYear = () => {
-  const [date, setDate] = useState(new Date());
-  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [isPressed, setIsPressed] = useState(false);
   return (
     <>
@@ -108,30 +116,34 @@ const ExpireYear = () => {
         >
           <View style={{ flex: 1 }}>
             <Text style={{ paddingTop: 12, paddingLeft: 4, color: "#b7b7b7" }}>
-              {month}
+              {!!year ? year : "Expired Year"}
             </Text>
           </View>
         </TouchableNativeFeedback>
       </View>
       {isPressed && (
-        <>
-          <Picker
-            style={{ backgroundColor: "white", width: 300, height: 215 }}
-            selectedItem="January"
-            onValueChange={(value) => {
-              // setIsPressed(false);
-              setMonth(value);
-            }}
-            pickerData={months}
-            itemSpace={40}
-            onPress={() => console.log("perss")}
-          />
+        <View style={{ flexDirection: "row" }}>
           <Icon
             onPress={() => setIsPressed(false)}
             type={"Entypo"}
             name="check"
           />
-        </>
+          <Picker
+            style={controlStyles.pickerStyle}
+            onValueChange={(value) => setYear(value)}
+            pickerData={getYears()}
+            itemSpace={40}
+          />
+          <Icon
+            onPress={() => {
+              setIsPressed(false);
+              setYear("");
+            }}
+            style={{ fontSize: 30 }}
+            type={"Entypo"}
+            name="cross"
+          />
+        </View>
       )}
     </>
   );
@@ -140,7 +152,7 @@ const ExpireYear = () => {
 const SecurityCode = () => {
   return (
     <TextInput
-      style={StyleSheet.flatten([controlStyles.inputStyle, { width: 90 }])}
+      style={StyleSheet.flatten([controlStyles.inputStyle, { width: 60 }])}
       placeholder="CVV"
       placeholderTextColor="#b7b7b7"
       keyboardType={"decimal-pad"}
@@ -188,6 +200,12 @@ const controlStyles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 4,
     paddingVertical: 15,
+  },
+  pickerStyle: {
+    alignSelf: "center",
+    backgroundColor: "white",
+    width: phoneWidth - 150,
+    height: 215,
   },
 });
 
