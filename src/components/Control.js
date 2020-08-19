@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Picker } from "react-native-wheel-pick";
 import ScrollPicker from "react-native-wheel-scroll-picker";
+import { Icon } from "native-base";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
@@ -71,17 +72,24 @@ const ExpireMonth = () => {
         </TouchableNativeFeedback>
       </View>
       {isPressed && (
-        <Picker
-          style={{ backgroundColor: "white", width: 300, height: 215 }}
-          selectedItem="January"
-          onValueChange={(value) => {
-            setIsPressed(false);
-            setMonth(value);
-          }}
-          pickerData={months}
-          itemSpace={40}
-          onPress={() => console.log("perss")}
-        />
+        <>
+          <Picker
+            style={{ backgroundColor: "white", width: 300, height: 215 }}
+            selectedItem="January"
+            onValueChange={(value) => {
+              // setIsPressed(false);
+              setMonth(value);
+            }}
+            pickerData={months}
+            itemSpace={40}
+            onPress={() => console.log("perss")}
+          />
+          <Icon
+            onPress={() => setIsPressed(false)}
+            type={"Entypo"}
+            name="check"
+          />
+        </>
       )}
     </>
   );
@@ -106,28 +114,24 @@ const ExpireYear = () => {
         </TouchableNativeFeedback>
       </View>
       {isPressed && (
-        <ScrollPicker
-          dataSource={months}
-          renderItem={(data, index, isSelected) => {
-            return;
-          }}
-          wrapperHeight={180}
-          wrapperWidth={150}
-          wrapperBackground={"#FFFFFF"}
-          itemHeight={60}
-          highlightColor={"#d8d8d8"}
-          highlightBorderWidth={2}
-          activeItemColor={"#222121"}
-          itemColor={"#B4B4B4"}
-
-          /*   onValueChange={(value) => {
-            setIsPressed(false);
-            setMonth(value);
-          }}
-          pickerData={months}
-          itemSpace={40}
-          onPress={() => console.log("perss")} */
-        />
+        <>
+          <Picker
+            style={{ backgroundColor: "white", width: 300, height: 215 }}
+            selectedItem="January"
+            onValueChange={(value) => {
+              // setIsPressed(false);
+              setMonth(value);
+            }}
+            pickerData={months}
+            itemSpace={40}
+            onPress={() => console.log("perss")}
+          />
+          <Icon
+            onPress={() => setIsPressed(false)}
+            type={"Entypo"}
+            name="check"
+          />
+        </>
       )}
     </>
   );
