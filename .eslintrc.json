@@ -2,9 +2,7 @@
   "env": {
     "browser": true,
     "es2020": true,
-    "react-native/react-native": true,
-    "mocha": true,
-    "jest": true
+    "react-native/react-native": true
   },
   "extends": [
     "eslint:recommended",

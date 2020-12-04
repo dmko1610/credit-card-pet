@@ -4,10 +4,10 @@ import MainScreen from "./screens/MainScreen";
 
 const App = () => {
   return (
-    <React.Fragment>
+    <>
       <StatusBar barStyle="dark-content" />
       <MainScreen />
-    </React.Fragment>
+    </>
   );
 };
 
