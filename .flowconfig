@@ -1,0 +1,12 @@
+[ignore]	
+node_modules/*
+.*/*[.]android.js
+[include]	
+
+[libs]	
+
+[lints]	
+
+[options]	
+
+[strict]

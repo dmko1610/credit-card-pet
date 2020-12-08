@@ -6,7 +6,9 @@
     "android": "react-native run-android",
     "build": "babel src/ -d lib/",
     "start": "react-native start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "flow": "flow",
+    "flow-stop": "flow-stop"
   },
   "dependencies": {
     "moment": "^2.27.0",
@@ -27,6 +29,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-native": "^3.8.1",
+    "flow-bin": "^0.139.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.0.5"
   }
