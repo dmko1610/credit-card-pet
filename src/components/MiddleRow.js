@@ -1,20 +1,21 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
-const BankIdentificationNumber = (style) => {
-  return <Text {...style}>1234 56</Text>;
+const BankIdentificationNumber = ({bin, number}) => {
+  return <Text style={number}>{bin}</Text>;
 };
 
-const AccountIdentifierNumber = (style) => {
+/* const AccountIdentifierNumber = (style) => {
   return <Text {...style}>78 9876 5432</Text>;
-};
+}; */
 
-const MiddleRow = () => {
+const MiddleRow = ({ cardNumber }) => {
   const { middleRowContainer, number } = middleRowStyle;
   return (
     <View style={middleRowContainer}>
-      <BankIdentificationNumber style={number} />
-      <AccountIdentifierNumber style={number} />
+      <BankIdentificationNumber number={number} bin={cardNumber} />
+      {/* <AccountIdentifierNumber style={number} /> */}
     </View>
   );
 };
@@ -33,5 +34,9 @@ const middleRowStyle = StyleSheet.create({
     fontFamily: "monospace",
   },
 });
+
+MiddleRow.propTypes = {
+  cardNumber: PropTypes.string,
+};
 
 export default MiddleRow;

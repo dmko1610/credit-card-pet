@@ -1,5 +1,6 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import {
   View,
   Dimensions,
@@ -39,23 +40,43 @@ function getYears() {
   return years;
 }
 
-const CardNumber = () => {
+const CardNumber = ({parentCb}) => {
+  const [formattedCardNumber, setCardNumber] = useState("");
+  const onChange = (event) => {
+    let value = event.nativeEvent.text;
+    if (value.length === 4 || value.length === 9 || value.length === 14) {
+      value = value + " ";
+    }
+    setCardNumber(value);
+    parentCb(value)
+  };
+
   return (
     <TextInput
       placeholder="Card Number"
       placeholderTextColor="#b7b7b7"
       style={StyleSheet.flatten([controlStyles.inputStyle, { marginTop: 5 }])}
       keyboardType={"decimal-pad"}
+      maxLength={19}
+      value={formattedCardNumber}
+      onChange={onChange}
     />
   );
 };
 
 const CardholderName = () => {
+  const [value, setValue] = React.useState("");
   return (
     <TextInput
+      ref={(ref) => (this.input = ref)}
       placeholder="Cardholder Name"
       placeholderTextColor="#b7b7b7"
       style={controlStyles.inputStyle}
+      autoCapitalize={"characters"}
+      onChange={(value) => {
+        setValue(value);
+      }}
+      value={value}
     />
   );
 };
@@ -160,10 +181,10 @@ const SecurityCode = () => {
   );
 };
 
-const Control = () => {
+const Control = ({parentCb}) => {
   return (
     <View style={controlStyles.container}>
-      <CardNumber />
+      <CardNumber parentCb={parentCb} />
       <CardholderName />
       <View style={{ flexDirection: "row" }}>
         <ExpireMonth />
@@ -208,5 +229,14 @@ const controlStyles = StyleSheet.create({
     height: 215,
   },
 });
+
+Control.propTypes = {
+  testCallback: PropTypes.func,
+  parentCb: PropTypes.func,
+};
+
+CardNumber.propTypes = {
+  parentCb: PropTypes.func,
+};
 
 export default Control;

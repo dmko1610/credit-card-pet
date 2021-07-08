@@ -1,9 +1,14 @@
 import React from "react";
 import { ScrollView } from "react-native";
-import RevertCard from "../components/RevertCard";
+import Card from "../components/Card";
+import Control from "../components/Control";
 
 const MainScreen = () => {
-
+  const [controlData, setControlData] = React.useState("");
+  function callbackFunc(data) {
+    console.log("data from control ", data);
+    setControlData(data);
+  };
   return (
     <ScrollView
       contentContainerStyle={{
@@ -11,9 +16,10 @@ const MainScreen = () => {
         justifyContent: "flex-start",
         margin: 10,
       }}
-      scrollEnabled
     >
-      <RevertCard />
+      {/* <RevertCard /> */}
+      <Card cardNumber={controlData} />
+      <Control parentCb={callbackFunc} />
     </ScrollView>
   );
 };
