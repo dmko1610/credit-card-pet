@@ -1,6 +1,7 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import DeviceInfo from "react-native-device-info";
 import {
   View,
   Dimensions,
@@ -40,7 +41,7 @@ function getYears() {
   return years;
 }
 
-const CardNumber = ({parentCb}) => {
+const CardNumber = ({ cardNumberCb }) => {
   const [formattedCardNumber, setCardNumber] = useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
@@ -48,7 +49,7 @@ const CardNumber = ({parentCb}) => {
       value = value + " ";
     }
     setCardNumber(value);
-    parentCb(value)
+    cardNumberCb(value);
   };
 
   return (
@@ -64,18 +65,20 @@ const CardNumber = ({parentCb}) => {
   );
 };
 
-const CardholderName = () => {
+const CardholderName = ({ cardholderNameCb }) => {
   const [value, setValue] = React.useState("");
+  const onChange = (event) => {
+    let value = event.nativeEvent.text;
+    setValue(value);
+    cardholderNameCb(value);
+  };
   return (
     <TextInput
-      ref={(ref) => (this.input = ref)}
       placeholder="Cardholder Name"
       placeholderTextColor="#b7b7b7"
       style={controlStyles.inputStyle}
       autoCapitalize={"characters"}
-      onChange={(value) => {
-        setValue(value);
-      }}
+      onChange={onChange}
       value={value}
     />
   );
@@ -181,11 +184,11 @@ const SecurityCode = () => {
   );
 };
 
-const Control = ({parentCb}) => {
+const Control = ({ cardNumberCb, cardholderNameCb }) => {
   return (
     <View style={controlStyles.container}>
-      <CardNumber parentCb={parentCb} />
-      <CardholderName />
+      <CardNumber cardNumberCb={cardNumberCb} />
+      <CardholderName cardholderNameCb={cardholderNameCb} />
       <View style={{ flexDirection: "row" }}>
         <ExpireMonth />
         <ExpireYear />
@@ -198,8 +201,8 @@ const Control = ({parentCb}) => {
 const controlStyles = StyleSheet.create({
   container: {
     position: "absolute",
-    width: phoneWidth - 20,
-    height: phoneHeight * 0.75,
+    width: DeviceInfo.isTablet ? phoneWidth - 300 : phoneWidth - 20,
+    height: DeviceInfo.isTablet ? phoneHeight * 0.5 : phoneHeight * 0.75,
     top: 150,
     borderRadius: 12,
     borderWidth: 1,
@@ -232,11 +235,16 @@ const controlStyles = StyleSheet.create({
 
 Control.propTypes = {
   testCallback: PropTypes.func,
-  parentCb: PropTypes.func,
+  cardNumberCb: PropTypes.func,
+  cardholderNameCb: PropTypes.func,
 };
 
 CardNumber.propTypes = {
-  parentCb: PropTypes.func,
+  cardNumberCb: PropTypes.func,
+};
+
+CardholderName.propTypes = {
+  cardholderNameCb: PropTypes.func,
 };
 
 export default Control;

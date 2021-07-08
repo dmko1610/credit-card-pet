@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 
-const CardholderName = (style) => {
-  return <Text {...style}>John Wick</Text>;
+const CardholderName = ({ cardholderName, style }) => {
+  return <Text style={style}>{cardholderName}</Text>;
 };
 
 const ExpireDate = (style) => {
@@ -26,11 +27,14 @@ const ExpirationBlock = () => {
   );
 };
 
-const BottomRow = () => {
+const BottomRow = ({ cardholderName }) => {
   const { commonText, cardholder, bottomRowContainer } = bottomRowStyle;
   return (
     <View style={bottomRowContainer}>
-      <CardholderName style={StyleSheet.flatten([commonText, cardholder])} />
+      <CardholderName
+        cardholderName={cardholderName}
+        style={StyleSheet.flatten([commonText, cardholder])}
+      />
       <ExpirationBlock />
     </View>
   );
@@ -65,5 +69,9 @@ const bottomRowStyle = StyleSheet.create({
     alignSelf: "flex-end",
   },
 });
+
+CardholderName.propTypes = {
+  cardholderName: PropTypes.string,
+};
 
 export default BottomRow;

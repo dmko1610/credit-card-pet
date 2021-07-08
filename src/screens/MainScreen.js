@@ -1,14 +1,23 @@
 import React from "react";
-import { ScrollView } from "react-native";
+import { Platform, ScrollView } from "react-native";
 import Card from "../components/Card";
 import Control from "../components/Control";
+import DeviceInfo from "react-native-device-info";
 
 const MainScreen = () => {
-  const [controlData, setControlData] = React.useState("");
-  function callbackFunc(data) {
-    console.log("data from control ", data);
-    setControlData(data);
-  };
+  const [cardNumber, setCardNumber] = React.useState("");
+  const [cardholderName, setCardholderName] = React.useState("");
+
+  function getCardNumber(data) {
+    setCardNumber(data);
+  }
+
+  function getCardholderName(data) {
+    setCardholderName(data);
+  }
+  /* if (DeviceInfo.isTablet) {
+  } */
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -18,8 +27,11 @@ const MainScreen = () => {
       }}
     >
       {/* <RevertCard /> */}
-      <Card cardNumber={controlData} />
-      <Control parentCb={callbackFunc} />
+      <Card cardNumber={cardNumber} cardholderName={cardholderName} />
+      <Control
+        cardNumberCb={getCardNumber}
+        cardholderNameCb={getCardholderName}
+      />
     </ScrollView>
   );
 };
