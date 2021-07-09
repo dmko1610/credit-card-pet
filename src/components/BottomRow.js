@@ -6,11 +6,15 @@ const CardholderName = ({ cardholderName, style }) => {
   return <Text style={style}>{cardholderName}</Text>;
 };
 
-const ExpireDate = (style) => {
-  return <Text {...style}>04/21</Text>;
+const ExpireDate = ({ expiredMonth, expiredYear, style }) => {
+  return (
+    <Text style={style}>
+      {expiredMonth}/{expiredYear}
+    </Text>
+  );
 };
 
-const ExpirationBlock = () => {
+const ExpirationBlock = ({ expiredMonth, expiredYear }) => {
   const {
     commonText,
     expireDate,
@@ -22,12 +26,16 @@ const ExpirationBlock = () => {
       <Text style={StyleSheet.flatten([commonText, expirationBlockTitle])}>
         month/year
       </Text>
-      <ExpireDate style={StyleSheet.flatten([commonText, expireDate])} />
+      <ExpireDate
+        expiredMonth={expiredMonth}
+        expiredYear={expiredYear}
+        style={StyleSheet.flatten([commonText, expireDate])}
+      />
     </View>
   );
 };
 
-const BottomRow = ({ cardholderName }) => {
+export const BottomRow = ({ cardholderName, expiredMonth, expiredYear }) => {
   const { commonText, cardholder, bottomRowContainer } = bottomRowStyle;
   return (
     <View style={bottomRowContainer}>
@@ -35,7 +43,7 @@ const BottomRow = ({ cardholderName }) => {
         cardholderName={cardholderName}
         style={StyleSheet.flatten([commonText, cardholder])}
       />
-      <ExpirationBlock />
+      <ExpirationBlock expiredMonth={expiredMonth} expiredYear={expiredYear} />
     </View>
   );
 };
@@ -72,6 +80,22 @@ const bottomRowStyle = StyleSheet.create({
 
 CardholderName.propTypes = {
   cardholderName: PropTypes.string,
+  style: PropTypes.style,
 };
 
-export default BottomRow;
+BottomRow.propTypes = {
+  cardholderName: PropTypes.string,
+  expiredMonth: PropTypes.string,
+  expiredYear: PropTypes.string,
+};
+
+ExpirationBlock.propTypes = {
+  expiredMonth: PropTypes.string,
+  expiredYear: PropTypes.string,
+};
+
+ExpireDate.propTypes = {
+  expiredMonth: PropTypes.string,
+  expiredYear: PropTypes.string,
+  style: PropTypes.style,
+};

@@ -1,6 +1,6 @@
 import React from "react";
 import { StatusBar } from "react-native";
-import MainScreen from "./screens/MainScreen";
+import { MainScreen } from "./screens/MainScreen";
 
 const App = () => {
   return (

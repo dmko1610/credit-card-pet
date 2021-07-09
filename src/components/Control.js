@@ -2,40 +2,36 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import DeviceInfo from "react-native-device-info";
-import {
-  View,
-  Dimensions,
-  StyleSheet,
-  TextInput,
-  TouchableNativeFeedback,
-  Text,
-} from "react-native";
-import { Icon } from "native-base";
-import { Picker } from "react-native-wheel-pick";
+import { View, Dimensions, StyleSheet, TextInput } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  { label: "January", value: "01" },
+  { label: "February", value: "02" },
+  { label: "March", value: "03" },
+  { label: "April", value: "04" },
+  { label: "May", value: "05" },
+  { label: "June", value: "06" },
+  { label: "July", value: "07" },
+  { label: "August", value: "08" },
+  { label: "September", value: "09" },
+  { label: "October", value: "10" },
+  { label: "November", value: "11" },
+  { label: "December", value: "12" },
 ];
 
 function getYears() {
   const years = [];
   const currentYear = new Date().getFullYear();
   let i = 0;
-  while (i < 50) {
-    years.push(currentYear + i);
+  while (i < 10) {
+    const year = {
+      label: (currentYear + i).toString(),
+      value: (currentYear + i).toString(),
+    };
+    years.push(year);
     i++;
   }
   return years;
@@ -56,7 +52,7 @@ const CardNumber = ({ cardNumberCb }) => {
     <TextInput
       placeholder="Card Number"
       placeholderTextColor="#b7b7b7"
-      style={StyleSheet.flatten([controlStyles.inputStyle, { marginTop: 5 }])}
+      style={controlStyles.inputStyle}
       keyboardType={"decimal-pad"}
       maxLength={19}
       value={formattedCardNumber}
@@ -84,92 +80,64 @@ const CardholderName = ({ cardholderNameCb }) => {
   );
 };
 
-const ExpireMonth = () => {
+const ExpireMonth = ({ monthCb }) => {
   const [month, setMonth] = useState("");
   const [isPressed, setIsPressed] = useState(false);
 
+  const onChange = (cb) => {
+    setMonth(cb());
+    monthCb(cb());
+  };
+
   return (
-    <>
-      <View style={StyleSheet.flatten([controlStyles.inputStyle, { flex: 1 }])}>
-        <TouchableNativeFeedback
-          onPress={() => setIsPressed(true)}
-          background={TouchableNativeFeedback.Ripple("lightgrey", false)}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ paddingTop: 12, paddingLeft: 4, color: "#b7b7b7" }}>
-              {!!month ? month : "Expired Month"}
-            </Text>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
-      {isPressed && (
-        <View style={{ flexDirection: "row" }}>
-          <Icon
-            onPress={() => setIsPressed(false)}
-            style={{ fontSize: 30 }}
-            type={"Entypo"}
-            name="check"
-          />
-          <Picker
-            style={controlStyles.pickerStyle}
-            onValueChange={(value) => setMonth(value)}
-            pickerData={months}
-            itemSpace={40}
-          />
-          <Icon
-            onPress={() => setIsPressed(false)}
-            style={{ fontSize: 30 }}
-            type="Entypo"
-            name="cross"
-          />
-        </View>
-      )}
-    </>
+    <View style={controlStyles.dropdownList}>
+      <DropDownPicker
+        listMode={"FLATLIST"}
+        items={months}
+        open={isPressed}
+        value={month}
+        setOpen={setIsPressed}
+        setValue={onChange}
+        placeholder={"Month"}
+        placeholderStyle={{ color: "#CCCCCC" }}
+        dropDownContainerStyle={{
+          borderColor: "#CCCCCC",
+        }}
+        style={{
+          borderColor: "#CCCCCC",
+        }}
+      />
+    </View>
   );
 };
 
-const ExpireYear = () => {
+const ExpireYear = ({ yearCb }) => {
   const [year, setYear] = useState("");
   const [isPressed, setIsPressed] = useState(false);
+
+  const onChange = (cb) => {
+    setYear(cb());
+    yearCb(cb());
+  };
   return (
-    <>
-      <View style={StyleSheet.flatten([controlStyles.inputStyle, { flex: 1 }])}>
-        <TouchableNativeFeedback
-          onPress={() => setIsPressed(true)}
-          background={TouchableNativeFeedback.Ripple("lightgrey", false)}
-        >
-          <View style={{ flex: 1 }}>
-            <Text style={{ paddingTop: 12, paddingLeft: 4, color: "#b7b7b7" }}>
-              {!!year ? year : "Expired Year"}
-            </Text>
-          </View>
-        </TouchableNativeFeedback>
-      </View>
-      {isPressed && (
-        <View style={{ flexDirection: "row" }}>
-          <Icon
-            onPress={() => setIsPressed(false)}
-            type={"Entypo"}
-            name="check"
-          />
-          <Picker
-            style={controlStyles.pickerStyle}
-            onValueChange={(value) => setYear(value)}
-            pickerData={getYears()}
-            itemSpace={40}
-          />
-          <Icon
-            onPress={() => {
-              setIsPressed(false);
-              setYear("");
-            }}
-            style={{ fontSize: 30 }}
-            type={"Entypo"}
-            name="cross"
-          />
-        </View>
-      )}
-    </>
+    <View style={controlStyles.dropdownList}>
+      <DropDownPicker
+        listMode={"FLATLIST"}
+        items={getYears()}
+        open={isPressed}
+        value={year}
+        setOpen={setIsPressed}
+        setValue={onChange}
+        placeholder={"Year"}
+        placeholderStyle={{ color: "#CCCCCC" }}
+        dropDownContainerStyle={{
+          borderColor: "#CCCCCC",
+        }}
+        style={{
+          borderColor: "#CCCCCC",
+        }}
+      />
+    </View>
   );
 };
 
@@ -184,14 +152,19 @@ const SecurityCode = () => {
   );
 };
 
-const Control = ({ cardNumberCb, cardholderNameCb }) => {
+export const Control = ({
+  cardNumberCb,
+  cardholderNameCb,
+  monthCb,
+  yearCb,
+}) => {
   return (
     <View style={controlStyles.container}>
       <CardNumber cardNumberCb={cardNumberCb} />
       <CardholderName cardholderNameCb={cardholderNameCb} />
-      <View style={{ flexDirection: "row" }}>
-        <ExpireMonth />
-        <ExpireYear />
+      <View style={controlStyles.bottomRowContainer}>
+        <ExpireMonth monthCb={monthCb} />
+        <ExpireYear yearCb={yearCb} />
         <SecurityCode />
       </View>
     </View>
@@ -201,8 +174,8 @@ const Control = ({ cardNumberCb, cardholderNameCb }) => {
 const controlStyles = StyleSheet.create({
   container: {
     position: "absolute",
-    width: DeviceInfo.isTablet ? phoneWidth - 300 : phoneWidth - 20,
-    height: DeviceInfo.isTablet ? phoneHeight * 0.5 : phoneHeight * 0.75,
+    width: DeviceInfo.isTablet() ? phoneWidth - 300 : phoneWidth - 20,
+    height: DeviceInfo.isTablet() ? phoneHeight * 0.5 : phoneHeight * 0.75,
     top: 150,
     borderRadius: 12,
     borderWidth: 1,
@@ -212,6 +185,14 @@ const controlStyles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
   },
+  bottomRowContainer: {
+    flexDirection: "row",
+  },
+  dropdownList: {
+    marginHorizontal: 15,
+    marginVertical: 20,
+    flex: 1,
+  },
   inputStyle: {
     borderWidth: 0.5,
     borderColor: "gray",
@@ -219,24 +200,14 @@ const controlStyles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 20,
   },
-  datePickerStyle: {
-    color: "#b7b7b7",
-    fontSize: 14,
-    paddingLeft: 4,
-    paddingVertical: 15,
-  },
-  pickerStyle: {
-    alignSelf: "center",
-    backgroundColor: "white",
-    width: phoneWidth - 150,
-    height: 215,
-  },
 });
 
 Control.propTypes = {
   testCallback: PropTypes.func,
   cardNumberCb: PropTypes.func,
   cardholderNameCb: PropTypes.func,
+  monthCb: PropTypes.func,
+  yearCb: PropTypes.func,
 };
 
 CardNumber.propTypes = {
@@ -247,4 +218,10 @@ CardholderName.propTypes = {
   cardholderNameCb: PropTypes.func,
 };
 
-export default Control;
+ExpireMonth.propTypes = {
+  monthCb: PropTypes.string,
+};
+
+ExpireYear.propTypes = {
+  yearCb: PropTypes.string,
+};
