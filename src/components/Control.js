@@ -141,13 +141,14 @@ const ExpireYear = ({ yearCb }) => {
   );
 };
 
-const SecurityCode = () => {
+const SecurityCode = ({cvvPressedCb}) => {
   return (
     <TextInput
       style={StyleSheet.flatten([controlStyles.inputStyle, { width: 60 }])}
       placeholder="CVV"
       placeholderTextColor="#b7b7b7"
       keyboardType={"decimal-pad"}
+      onFocus={() => cvvPressedCb()}
     />
   );
 };
@@ -157,6 +158,7 @@ export const Control = ({
   cardholderNameCb,
   monthCb,
   yearCb,
+  cvvPressedCb
 }) => {
   return (
     <View style={controlStyles.container}>
@@ -165,7 +167,7 @@ export const Control = ({
       <View style={controlStyles.bottomRowContainer}>
         <ExpireMonth monthCb={monthCb} />
         <ExpireYear yearCb={yearCb} />
-        <SecurityCode />
+        <SecurityCode cvvPressedCb={cvvPressedCb}/>
       </View>
     </View>
   );
@@ -173,10 +175,10 @@ export const Control = ({
 
 const controlStyles = StyleSheet.create({
   container: {
-    position: "absolute",
+    // position: "absolute",
     width: DeviceInfo.isTablet() ? phoneWidth - 300 : phoneWidth - 20,
-    height: DeviceInfo.isTablet() ? phoneHeight * 0.5 : phoneHeight * 0.75,
-    top: 150,
+    height: DeviceInfo.isTablet() ? phoneHeight * 0.3 : phoneHeight * 0.45,
+    // top: 150,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "gray",

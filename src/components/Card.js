@@ -1,6 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Dimensions, StyleSheet, ImageBackground } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  ImageBackground,
+  View,
+  Animated,
+  TouchableOpacity,
+  Text,
+  SafeAreaView,
+} from "react-native";
 import DeviceInfo from "react-native-device-info";
 import TopRow from "./TopRow";
 import MiddleRow from "./MiddleRow";
@@ -11,28 +20,56 @@ const abstract = require("../assets/abstract.jpg");
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 
-export const Card = ({
-  cardNumber,
-  cardholderName,
-  expiredMonth,
-  expiredYear,
-}) => {
-  return (
-    <ImageBackground
-      source={abstract}
-      style={crediCardStyle.cardContainer}
-      imageStyle={crediCardStyle.image}
-    >
-      <TopRow />
-      <MiddleRow cardNumber={cardNumber} />
-      <BottomRow
-        cardholderName={cardholderName}
-        expiredMonth={expiredMonth}
-        expiredYear={expiredYear}
-      />
-    </ImageBackground>
-  );
-};
+export class Card extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  // cardNumber,
+  // cardholderName,
+  // expiredMonth,
+  // expiredYear,
+
+  // startAnimation() {
+  //   return Animated.timing(animatedValue, {
+  //     toValue: 1,
+  //     duration: 1000,
+  //     useNativeDriver: true,
+  //   });
+  // }
+
+  render() {
+    return (
+      // <Animated.View
+      //   style={{
+      //     zIndex: 100,
+      //     transform: [
+      //       {
+      //         scale: animatedValue.interpolate({
+      //           inputRange: [0, 0.5, 1],
+      //           outputRange: [1, 2, 3],
+      //         }),
+      //       },
+      //     ],
+      //   }}
+      // >
+      <SafeAreaView>
+        <ImageBackground
+          source={abstract}
+          style={crediCardStyle.cardContainer}
+          imageStyle={crediCardStyle.image}
+        >
+          <TopRow />
+          <MiddleRow cardNumber={this.props.cardNumber} />
+          <BottomRow
+            cardholderName={this.props.cardholderName}
+            expiredMonth={this.props.expiredMonth}
+            expiredYear={this.props.expiredYear}
+          />
+        </ImageBackground>
+      </SafeAreaView>
+    );
+  }
+}
 
 const crediCardStyle = StyleSheet.create({
   cardContainer: {
