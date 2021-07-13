@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   Dimensions,
   StyleSheet,
@@ -11,7 +12,7 @@ const phoneWidth = Math.round(Dimensions.get("screen").width);
 const abstract = require("../assets/abstract.jpg");
 // const tree = require("../assets/tree.jpg");
 
-const RevertCard = () => {
+export const RevertCard = ({ cvvCode }) => {
   return (
     <ImageBackground
       source={abstract}
@@ -34,13 +35,22 @@ const RevertCard = () => {
             width: phoneWidth - 100,
             backgroundColor: "white",
             justifyContent: "space-around",
-            alignItems: "flex-end"
+            alignItems: "flex-end",
           }}
         >
           {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => line(index))}
         </View>
         <View style={{ position: "absolute", left: 5 }}>
-          <Text style={{ transform: [{ rotateY: "180deg" }], fontSize: 20, fontFamily: "Roboto", letterSpacing: 2 }}>123</Text>
+          <Text
+            style={{
+              transform: [{ rotateY: "180deg" }],
+              fontSize: 20,
+              fontFamily: "Roboto",
+              letterSpacing: 2,
+            }}
+          >
+            {cvvCode}
+          </Text>
         </View>
       </View>
     </ImageBackground>
@@ -48,16 +58,7 @@ const RevertCard = () => {
 };
 
 const line = (index) => {
-  return (
-    <View
-      key={index}
-      style={{
-        height: StyleSheet.hairlineWidth,
-        width: phoneWidth - 150,
-        backgroundColor: "darkblue",
-      }}
-    />
-  );
+  return <View key={index} style={crediCardStyle.lineStyle} />;
 };
 
 const crediCardStyle = StyleSheet.create({
@@ -76,6 +77,13 @@ const crediCardStyle = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 0.3,
   },
+  lineStyle: {
+    height: StyleSheet.hairlineWidth,
+    width: phoneWidth - 150,
+    backgroundColor: "darkblue",
+  },
 });
 
-export default RevertCard;
+RevertCard.propTypes = {
+  cvvCode: PropTypes.string,
+};

@@ -141,14 +141,26 @@ const ExpireYear = ({ yearCb }) => {
   );
 };
 
-const SecurityCode = ({cvvPressedCb}) => {
+const SecurityCode = ({ cvvFocusedCb, cvvCodeCb }) => {
+  const [value, setValue] = React.useState("");
+  const onChange = (event) => {
+    let value = event.nativeEvent.text;
+    setValue(value);
+    cvvCodeCb(value);
+  };
+
   return (
     <TextInput
       style={StyleSheet.flatten([controlStyles.inputStyle, { width: 60 }])}
       placeholder="CVV"
       placeholderTextColor="#b7b7b7"
       keyboardType={"decimal-pad"}
-      onFocus={() => cvvPressedCb()}
+      value={value}
+      maxLength={3}
+      onChange={onChange}
+      onFocus={() => cvvFocusedCb(true)}
+      onBlur={() => cvvFocusedCb(false)}
+      onSubmitEditing={() => cvvFocusedCb(false)}
     />
   );
 };
@@ -158,7 +170,8 @@ export const Control = ({
   cardholderNameCb,
   monthCb,
   yearCb,
-  cvvPressedCb
+  cvvFocusedCb,
+  cvvCodeCb,
 }) => {
   return (
     <View style={controlStyles.container}>
@@ -167,7 +180,7 @@ export const Control = ({
       <View style={controlStyles.bottomRowContainer}>
         <ExpireMonth monthCb={monthCb} />
         <ExpireYear yearCb={yearCb} />
-        <SecurityCode cvvPressedCb={cvvPressedCb}/>
+        <SecurityCode cvvFocusedCb={cvvFocusedCb} cvvCodeCb={cvvCodeCb} />
       </View>
     </View>
   );
@@ -175,10 +188,8 @@ export const Control = ({
 
 const controlStyles = StyleSheet.create({
   container: {
-    // position: "absolute",
     width: DeviceInfo.isTablet() ? phoneWidth - 300 : phoneWidth - 20,
-    height: DeviceInfo.isTablet() ? phoneHeight * 0.3 : phoneHeight * 0.45,
-    // top: 150,
+    height: DeviceInfo.isTablet() ? phoneHeight * 0.3 : phoneHeight / 3,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "gray",
@@ -210,6 +221,8 @@ Control.propTypes = {
   cardholderNameCb: PropTypes.func,
   monthCb: PropTypes.func,
   yearCb: PropTypes.func,
+  cvvFocusedCb: PropTypes.func,
+  cvvCodeCb: PropTypes.func,
 };
 
 CardNumber.propTypes = {
@@ -226,4 +239,9 @@ ExpireMonth.propTypes = {
 
 ExpireYear.propTypes = {
   yearCb: PropTypes.string,
+};
+
+SecurityCode.propTypes = {
+  cvvFocusedCb: PropTypes.func,
+  cvvCodeCb: PropTypes.func,
 };
