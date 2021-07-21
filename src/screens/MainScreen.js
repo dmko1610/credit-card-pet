@@ -2,7 +2,7 @@ import React from "react";
 import { Animated, ScrollView, StyleSheet, View } from "react-native";
 import { Card } from "../components/Card";
 import { Control } from "../components/Control";
-import RevertCard from "../components/RevertCard";
+import { RevertCard } from "../components/RevertCard";
 
 export const MainScreen = () => {
   const cardRotationAnim = React.useRef(new Animated.Value(0)).current;
