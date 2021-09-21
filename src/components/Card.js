@@ -11,7 +11,12 @@ const abstract = require("../assets/abstract.jpg");
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 
-export const Card = () => {
+export const Card = ({
+  cardNumber,
+  cardholderName,
+  expiredMonth,
+  expiredYear,
+}) => {
   return (
     <ImageBackground
       source={abstract}
@@ -19,11 +24,11 @@ export const Card = () => {
       imageStyle={crediCardStyle.image}
     >
       <TopRow />
-      <MiddleRow cardNumber={this.props.cardNumber} />
+      <MiddleRow cardNumber={cardNumber} />
       <BottomRow
-        cardholderName={this.props.cardholderName}
-        expiredMonth={this.props.expiredMonth}
-        expiredYear={this.props.expiredYear}
+        cardholderName={cardholderName}
+        expiredMonth={expiredMonth}
+        expiredYear={expiredYear}
       />
     </ImageBackground>
   );
