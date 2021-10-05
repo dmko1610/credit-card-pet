@@ -5,7 +5,7 @@ import DeviceInfo from "react-native-device-info";
 import { View, Dimensions, StyleSheet, TextInput } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useDispatch } from "react-redux";
-import { changeCardNumber } from "../actions/RootActions";
+import { changeCardholderName, changeCardNumber } from "../actions/RootActions";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
@@ -39,7 +39,7 @@ function getYears() {
   return years;
 }
 
-const CardNumber = React.memo(({ cardNumberCb }) => {
+const CardNumber = React.memo(({ onChangeNumber }) => {
   const [formattedCardNumber, setCardNumber] = useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
@@ -47,8 +47,7 @@ const CardNumber = React.memo(({ cardNumberCb }) => {
       value = value + " ";
     }
     setCardNumber(value);
-    console.log("val ", value);
-    cardNumberCb(value);
+    onChangeNumber(value);
   };
 
   return (
@@ -64,12 +63,12 @@ const CardNumber = React.memo(({ cardNumberCb }) => {
   );
 });
 
-const CardholderName = ({ cardholderNameCb }) => {
+const CardholderName = React.memo(({ onChangeName }) => {
   const [value, setValue] = React.useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
     setValue(value);
-    cardholderNameCb(value);
+    onChangeName(value);
   };
   return (
     <TextInput
@@ -81,7 +80,7 @@ const CardholderName = ({ cardholderNameCb }) => {
       value={value}
     />
   );
-};
+});
 
 const ExpireMonth = ({ monthCb }) => {
   const [month, setMonth] = useState("");
@@ -168,22 +167,25 @@ const SecurityCode = ({ cvvFocusedCb, cvvCodeCb }) => {
   );
 };
 
-export const Control = ({
-  cardholderNameCb,
-  monthCb,
-  yearCb,
-  cvvFocusedCb,
-  cvvCodeCb,
-}) => {
+export const Control = () => {
   const dispatch = useDispatch();
   const changeNumber = useCallback(
     (value) => dispatch(changeCardNumber(value)),
     [dispatch]
   );
+  const changeName = useCallback(
+    (value) => dispatch(changeCardholderName(value)),
+    [dispatch]
+  );
+
+  const changeMonth = useCallback((value) => dispatch(), [dispatch]);
+  const changeYear = useCallback((value) => dispatch(), [dispatch]);
+  const changeCvv = useCallback((value) => dispatch(), [dispatch]);
+  
   return (
     <View style={controlStyles.container}>
-      <CardNumber cardNumberCb={changeNumber} />
-      <CardholderName cardholderNameCb={cardholderNameCb} />
+      <CardNumber onChangeNumber={changeNumber} />
+      <CardholderName onChangeName={changeName} />
       <View style={controlStyles.bottomRowContainer}>
         <ExpireMonth monthCb={monthCb} />
         <ExpireYear yearCb={yearCb} />

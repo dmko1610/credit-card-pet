@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 
-const CardholderName = ({ cardholderName, style }) => {
+const CardholderName = ({ style }) => {
+  const cardholderName = useSelector((state) => state.root.cardholderName);
   return <Text style={style}>{cardholderName}</Text>;
 };
 
