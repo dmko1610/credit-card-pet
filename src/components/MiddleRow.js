@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 
 const BankIdentificationNumber = ({ bin, number }) => {
   return <Text style={number}>{bin}</Text>;
@@ -10,7 +11,8 @@ const BankIdentificationNumber = ({ bin, number }) => {
   return <Text>78 9876 5432</Text>;
 }; */
 
-const MiddleRow = ({ cardNumber }) => {
+const MiddleRow = () => {
+  const cardNumber = useSelector((state) => state.root.cardNumber);
   const { middleRowContainer, number } = middleRowStyle;
   return (
     <View style={middleRowContainer}>

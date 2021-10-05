@@ -1,9 +1,11 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
 import DeviceInfo from "react-native-device-info";
 import { View, Dimensions, StyleSheet, TextInput } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { useDispatch } from "react-redux";
+import { changeCardNumber } from "../actions/RootActions";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
@@ -37,7 +39,7 @@ function getYears() {
   return years;
 }
 
-const CardNumber = ({ cardNumberCb }) => {
+const CardNumber = React.memo(({ cardNumberCb }) => {
   const [formattedCardNumber, setCardNumber] = useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
@@ -45,6 +47,7 @@ const CardNumber = ({ cardNumberCb }) => {
       value = value + " ";
     }
     setCardNumber(value);
+    console.log("val ", value);
     cardNumberCb(value);
   };
 
@@ -59,7 +62,7 @@ const CardNumber = ({ cardNumberCb }) => {
       onChange={onChange}
     />
   );
-};
+});
 
 const CardholderName = ({ cardholderNameCb }) => {
   const [value, setValue] = React.useState("");
@@ -166,16 +169,20 @@ const SecurityCode = ({ cvvFocusedCb, cvvCodeCb }) => {
 };
 
 export const Control = ({
-  cardNumberCb,
   cardholderNameCb,
   monthCb,
   yearCb,
   cvvFocusedCb,
   cvvCodeCb,
 }) => {
+  const dispatch = useDispatch();
+  const changeNumber = useCallback(
+    (value) => dispatch(changeCardNumber(value)),
+    [dispatch]
+  );
   return (
     <View style={controlStyles.container}>
-      <CardNumber cardNumberCb={cardNumberCb} />
+      <CardNumber cardNumberCb={changeNumber} />
       <CardholderName cardholderNameCb={cardholderNameCb} />
       <View style={controlStyles.bottomRowContainer}>
         <ExpireMonth monthCb={monthCb} />
@@ -245,3 +252,5 @@ SecurityCode.propTypes = {
   cvvFocusedCb: PropTypes.func,
   cvvCodeCb: PropTypes.func,
 };
+
+CardNumber.displayName = "CardNumber";
