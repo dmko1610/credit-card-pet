@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   expiredMonth: "",
   expiredYear: "",
   cvvCode: "",
+  isCvvFocused: false,
 };
 
 const rootReducer = (state = INITIAL_STATE, action) => {
@@ -34,6 +35,11 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cvvCode: action.payload,
+      };
+    case "TOGGLE_CVV":
+      return {
+        ...state,
+        isCvvCodeFocused: action.payload,
       };
     default:
       return state;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Animated, ScrollView, StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import { Card } from "../components/Card";
 import { Control } from "../components/Control";
 import { RevertCard } from "../components/RevertCard";
@@ -8,17 +9,15 @@ export const MainScreen = () => {
   const cardRotationAnim = React.useRef(new Animated.Value(0)).current;
   const revertRotationAnim = React.useRef(new Animated.Value(0)).current;
 
-  const [isCvvFocused, setCvvFocused] = React.useState(false);
-
-  const getCvvFocused = (data) => setCvvFocused(data);
+  const isCvvCodeFocused = useSelector((state) => state.root.isCvvCodeFocused);
 
   React.useEffect(() => {
-    if (isCvvFocused) {
+    if (isCvvCodeFocused) {
       startAnimation().start();
     } else {
       stopAnimation().start();
     }
-  }, [isCvvFocused]);
+  }, [isCvvCodeFocused]);
 
   const startAnimation = () =>
     Animated.sequence([
@@ -82,7 +81,7 @@ export const MainScreen = () => {
         <RevertCard />
       </Animated.View>
       <View>
-        <Control cvvFocusedCb={getCvvFocused} />
+        <Control />
       </View>
     </View>
   );

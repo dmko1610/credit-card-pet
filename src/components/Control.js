@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import DeviceInfo from "react-native-device-info";
 import { View, Dimensions, StyleSheet, TextInput } from "react-native";
@@ -11,6 +11,9 @@ import {
   changeCvvCode,
   changeExpiredMonth,
   changeExpiredYear,
+  toggleCvvCodeFocus,
+  toggleCvvFocus,
+  toggleCvvFocuse,
 } from "../actions/RootActions";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
@@ -45,7 +48,7 @@ function getYears() {
   return years;
 }
 
-const CardNumber = ({ onChangeNumber }) => {
+const CardNumber = ({ onChangeNumber, onSubmitEditing }) => {
   const [formattedCardNumber, setCardNumber] = useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
@@ -65,28 +68,33 @@ const CardNumber = ({ onChangeNumber }) => {
       maxLength={19}
       value={formattedCardNumber}
       onChange={onChange}
+      onSubmitEditing={onSubmitEditing}
     />
   );
 };
 
-const CardholderName = ({ onChangeName }) => {
-  const [value, setValue] = React.useState("");
-  const onChange = (event) => {
-    let value = event.nativeEvent.text;
-    setValue(value);
-    onChangeName(value);
-  };
-  return (
-    <TextInput
-      placeholder="Cardholder Name"
-      placeholderTextColor="#b7b7b7"
-      style={controlStyles.inputStyle}
-      autoCapitalize={"characters"}
-      onChange={onChange}
-      value={value}
-    />
-  );
-};
+const CardholderName = React.forwardRef(
+  ({ onChangeName, onSubmitEditing }, ref) => {
+    const [value, setValue] = React.useState("");
+    const onChange = (event) => {
+      let value = event.nativeEvent.text;
+      setValue(value);
+      onChangeName(value);
+    };
+    return (
+      <TextInput
+        ref={ref}
+        placeholder="Cardholder Name"
+        placeholderTextColor="#b7b7b7"
+        style={controlStyles.inputStyle}
+        autoCapitalize={"characters"}
+        onChange={onChange}
+        value={value}
+        onSubmitEditing={onSubmitEditing}
+      />
+    );
+  }
+);
 
 const ExpireMonth = ({ onChangeMonth }) => {
   const [month, setMonth] = useState("");
@@ -119,7 +127,7 @@ const ExpireMonth = ({ onChangeMonth }) => {
   );
 };
 
-const ExpireYear = ({ onChangeYear }) => {
+const ExpireYear = ({ onChangeYear, onClose }) => {
   const [year, setYear] = useState("");
   const [isPressed, setIsPressed] = useState(false);
 
@@ -144,36 +152,45 @@ const ExpireYear = ({ onChangeYear }) => {
         style={{
           borderColor: "#CCCCCC",
         }}
+        onClose={onClose}
       />
     </View>
   );
 };
 
-const SecurityCode = ({ cvvFocusedCb, onChangeCvvCode }) => {
-  const [value, setValue] = React.useState("");
-  const onChange = (event) => {
-    let value = event.nativeEvent.text;
-    setValue(value);
-    onChangeCvvCode(value);
-  };
+const SecurityCode = React.forwardRef(
+  ({ onFocusedCvvCode, onChangeCvvCode }, ref) => {
+    const [value, setValue] = React.useState("");
+    const onChange = (event) => {
+      let value = event.nativeEvent.text;
+      setValue(value);
+      onChangeCvvCode(value);
+    };
 
-  return (
-    <TextInput
-      style={StyleSheet.flatten([controlStyles.inputStyle, { width: 60 }])}
-      placeholder="CVV"
-      placeholderTextColor="#b7b7b7"
-      keyboardType={"decimal-pad"}
-      value={value}
-      maxLength={3}
-      onChange={onChange}
-      onFocus={() => cvvFocusedCb(true)}
-      onBlur={() => cvvFocusedCb(false)}
-      onSubmitEditing={() => cvvFocusedCb(false)}
-    />
-  );
-};
+    return (
+      <TextInput
+        ref={ref}
+        style={StyleSheet.flatten([controlStyles.inputStyle, { width: 60 }])}
+        placeholder="CVV"
+        placeholderTextColor="#b7b7b7"
+        keyboardType={"decimal-pad"}
+        value={value}
+        maxLength={3}
+        onChange={onChange}
+        onFocus={() => onFocusedCvvCode(true)}
+        onBlur={() => onFocusedCvvCode(false)}
+        onSubmitEditing={() => onFocusedCvvCode(false)}
+      />
+    );
+  }
+);
 
-export const Control = ({ cvvFocusedCb }) => {
+export const Control = () => {
+  const nameRef = useRef(null);
+  const cvvRef = useRef(null);
+  const onNumberSubmitted = () => nameRef.current.focus();
+  const onYearSubmitted = () => cvvRef.current.focus();
+
   const dispatch = useDispatch();
   const changeNumber = (value) => dispatch(changeCardNumber(value));
   const changeName = (value) => dispatch(changeCardholderName(value));
@@ -181,15 +198,23 @@ export const Control = ({ cvvFocusedCb }) => {
   const changeMonth = (value) => dispatch(changeExpiredMonth(value));
   const changeYear = (value) => dispatch(changeExpiredYear(value));
   const changeCvv = (value) => dispatch(changeCvvCode(value));
+  const toggleCvvFocus = (value) => dispatch(toggleCvvCodeFocus(value));
 
   return (
     <View style={controlStyles.container}>
-      <CardNumber onChangeNumber={changeNumber} />
-      <CardholderName onChangeName={changeName} />
+      <CardNumber
+        onChangeNumber={changeNumber}
+        onSubmitEditing={onNumberSubmitted}
+      />
+      <CardholderName onChangeName={changeName} ref={nameRef} />
       <View style={controlStyles.bottomRowContainer}>
         <ExpireMonth onChangeMonth={changeMonth} />
-        <ExpireYear onChangeYear={changeYear} />
-        <SecurityCode cvvFocusedCb={cvvFocusedCb} onChangeCvvCode={changeCvv} />
+        <ExpireYear onChangeYear={changeYear} onClose={onYearSubmitted} />
+        <SecurityCode
+          onChangeCvvCode={changeCvv}
+          onFocusedCvvCode={toggleCvvFocus}
+          ref={cvvRef}
+        />
       </View>
     </View>
   );
@@ -224,35 +249,27 @@ const controlStyles = StyleSheet.create({
   },
 });
 
-Control.propTypes = {
-  testCallback: PropTypes.func,
-  cardNumberCb: PropTypes.func,
-  cardholderNameCb: PropTypes.func,
-  monthCb: PropTypes.func,
-  yearCb: PropTypes.func,
-  cvvFocusedCb: PropTypes.func,
-  cvvCodeCb: PropTypes.func,
-};
-
 CardNumber.propTypes = {
-  cardNumberCb: PropTypes.func,
+  onChangeNumber: PropTypes.func,
+  onSubmitEditing: PropTypes.func,
 };
 
 CardholderName.propTypes = {
-  cardholderNameCb: PropTypes.func,
+  onChangeName: PropTypes.func,
 };
 
 ExpireMonth.propTypes = {
-  monthCb: PropTypes.string,
+  onChangeMonth: PropTypes.func,
 };
 
 ExpireYear.propTypes = {
-  yearCb: PropTypes.string,
+  onChangeYear: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 SecurityCode.propTypes = {
-  cvvFocusedCb: PropTypes.func,
-  cvvCodeCb: PropTypes.func,
+  toggleCvvCodeFocus: PropTypes.func,
+  onChangeCvvCode: PropTypes.func,
 };
 
 CardNumber.displayName = "CardNumber";
