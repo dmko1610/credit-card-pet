@@ -14,10 +14,13 @@ const abstract = require("../assets/abstract.jpg");
 // const tree = require("../assets/tree.jpg");
 
 export const RevertCard = () => {
-  const cvvCode = useSelector(state => state.root.cvvCode);
+  const cvvCode = useSelector((state) => state.root.cvvCode);
+  const backgroundThemeUrl = useSelector(
+    (state) => state.theme.backgroundThemeUrl
+  );
   return (
     <ImageBackground
-      source={abstract}
+      source={{ uri: backgroundThemeUrl }}
       style={crediCardStyle.cardContainer}
       imageStyle={crediCardStyle.image}
     >

@@ -1,11 +1,22 @@
-import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Image, StyleSheet, Pressable } from "react-native";
+import { useDispatch } from "react-redux";
+import { changeBackgroundImage } from "../actions/ThemeActions";
 
 const hologram = require("../assets/hologram.png");
 const mastercard = require("../assets/mastercard.png");
 
 const Hologram = () => {
-  return <Image source={hologram} style={topRowStyle.hologram} />;
+  const dispatch = useDispatch();
+
+  return (
+    <Pressable
+      android_ripple={{ borderless: false, color: "#CCCCCC" }}
+      onPress={() => dispatch(changeBackgroundImage())}
+    >
+      <Image source={hologram} style={topRowStyle.hologram} />
+    </Pressable>
+  );
 };
 
 const PaySystemLogo = () => {

@@ -5,6 +5,7 @@ import DeviceInfo from "react-native-device-info";
 import TopRow from "./TopRow";
 import MiddleRow from "./MiddleRow";
 import { BottomRow } from "./BottomRow";
+import { useSelector } from "react-redux";
 
 const abstract = require("../assets/abstract.jpg");
 // const tree = require("../assets/tree.jpg");
@@ -12,9 +13,15 @@ const abstract = require("../assets/abstract.jpg");
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 
 export const Card = () => {
+  const backgroundThemeUrl = useSelector(
+    (state) => state.theme.backgroundThemeUrl
+  );
+  console.log("baaa ", backgroundThemeUrl);
   return (
     <ImageBackground
-      source={abstract}
+      source={{
+        uri: backgroundThemeUrl
+      }}
       style={crediCardStyle.cardContainer}
       imageStyle={crediCardStyle.image}
     >

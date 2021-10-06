@@ -41,9 +41,10 @@ const styles = StyleSheet.create({
   },
   number: {
     letterSpacing: 2,
-    color: "black",
+    color: "white",
     fontSize: 25,
-    fontFamily: "monospace",
+    fontWeight: "bold",
+    fontFamily: "FiraCode",
   },
 });
 

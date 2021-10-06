@@ -85,11 +85,16 @@ const styles = StyleSheet.create({
   },
   expireDate: {
     fontSize: 17,
+    fontFamily: "FiraCode",
+    fontWeight: "bold",
+    color: "white",
     letterSpacing: 2,
     paddingBottom: 5,
   },
   commonText: {
-    color: "black",
+    color: "white",
+    fontWeight: "bold",
+    fontFamily: "FiraCode",
   },
   expirationBlockTitle: {
     fontSize: 7,
@@ -102,6 +107,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#FFFFFF",
     borderRadius: 10,
-    padding: 5
+    padding: 5,
   },
 });
