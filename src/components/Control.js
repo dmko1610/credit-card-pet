@@ -5,7 +5,13 @@ import DeviceInfo from "react-native-device-info";
 import { View, Dimensions, StyleSheet, TextInput } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useDispatch } from "react-redux";
-import { changeCardholderName, changeCardNumber } from "../actions/RootActions";
+import {
+  changeCardholderName,
+  changeCardNumber,
+  changeCvvCode,
+  changeExpiredMonth,
+  changeExpiredYear,
+} from "../actions/RootActions";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
@@ -39,7 +45,7 @@ function getYears() {
   return years;
 }
 
-const CardNumber = React.memo(({ onChangeNumber }) => {
+const CardNumber = ({ onChangeNumber }) => {
   const [formattedCardNumber, setCardNumber] = useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
@@ -61,9 +67,9 @@ const CardNumber = React.memo(({ onChangeNumber }) => {
       onChange={onChange}
     />
   );
-});
+};
 
-const CardholderName = React.memo(({ onChangeName }) => {
+const CardholderName = ({ onChangeName }) => {
   const [value, setValue] = React.useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
@@ -80,15 +86,15 @@ const CardholderName = React.memo(({ onChangeName }) => {
       value={value}
     />
   );
-});
+};
 
-const ExpireMonth = ({ monthCb }) => {
+const ExpireMonth = ({ onChangeMonth }) => {
   const [month, setMonth] = useState("");
   const [isPressed, setIsPressed] = useState(false);
 
   const onChange = (cb) => {
     setMonth(cb());
-    monthCb(cb());
+    onChangeMonth(cb());
   };
 
   return (
@@ -113,13 +119,13 @@ const ExpireMonth = ({ monthCb }) => {
   );
 };
 
-const ExpireYear = ({ yearCb }) => {
+const ExpireYear = ({ onChangeYear }) => {
   const [year, setYear] = useState("");
   const [isPressed, setIsPressed] = useState(false);
 
   const onChange = (cb) => {
     setYear(cb());
-    yearCb(cb());
+    onChangeYear(cb());
   };
   return (
     <View style={controlStyles.dropdownList}>
@@ -143,12 +149,12 @@ const ExpireYear = ({ yearCb }) => {
   );
 };
 
-const SecurityCode = ({ cvvFocusedCb, cvvCodeCb }) => {
+const SecurityCode = ({ cvvFocusedCb, onChangeCvvCode }) => {
   const [value, setValue] = React.useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
     setValue(value);
-    cvvCodeCb(value);
+    onChangeCvvCode(value);
   };
 
   return (
@@ -167,29 +173,23 @@ const SecurityCode = ({ cvvFocusedCb, cvvCodeCb }) => {
   );
 };
 
-export const Control = () => {
+export const Control = ({ cvvFocusedCb }) => {
   const dispatch = useDispatch();
-  const changeNumber = useCallback(
-    (value) => dispatch(changeCardNumber(value)),
-    [dispatch]
-  );
-  const changeName = useCallback(
-    (value) => dispatch(changeCardholderName(value)),
-    [dispatch]
-  );
+  const changeNumber = (value) => dispatch(changeCardNumber(value));
+  const changeName = (value) => dispatch(changeCardholderName(value));
 
-  const changeMonth = useCallback((value) => dispatch(), [dispatch]);
-  const changeYear = useCallback((value) => dispatch(), [dispatch]);
-  const changeCvv = useCallback((value) => dispatch(), [dispatch]);
-  
+  const changeMonth = (value) => dispatch(changeExpiredMonth(value));
+  const changeYear = (value) => dispatch(changeExpiredYear(value));
+  const changeCvv = (value) => dispatch(changeCvvCode(value));
+
   return (
     <View style={controlStyles.container}>
       <CardNumber onChangeNumber={changeNumber} />
       <CardholderName onChangeName={changeName} />
       <View style={controlStyles.bottomRowContainer}>
-        <ExpireMonth monthCb={monthCb} />
-        <ExpireYear yearCb={yearCb} />
-        <SecurityCode cvvFocusedCb={cvvFocusedCb} cvvCodeCb={cvvCodeCb} />
+        <ExpireMonth onChangeMonth={changeMonth} />
+        <ExpireYear onChangeYear={changeYear} />
+        <SecurityCode cvvFocusedCb={cvvFocusedCb} onChangeCvvCode={changeCvv} />
       </View>
     </View>
   );

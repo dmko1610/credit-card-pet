@@ -37,11 +37,6 @@ const middleRowStyle = StyleSheet.create({
   },
 });
 
-MiddleRow.propTypes = {
-  cardNumber: PropTypes.string,
-  cardholderName: PropTypes.string,
-};
-
 BankIdentificationNumber.propTypes = {
   bin: PropTypes.string,
   number: PropTypes.style,

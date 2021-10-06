@@ -7,12 +7,14 @@ import {
   Text,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const abstract = require("../assets/abstract.jpg");
 // const tree = require("../assets/tree.jpg");
 
-export const RevertCard = ({ cvvCode }) => {
+export const RevertCard = () => {
+  const cvvCode = useSelector(state => state.root.cvvCode);
   return (
     <ImageBackground
       source={abstract}
@@ -38,7 +40,7 @@ export const RevertCard = ({ cvvCode }) => {
             alignItems: "flex-end",
           }}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((index) => line(index))}
+          {[1, 2, 3, 4, 5, 6].map((index) => line(index))}
         </View>
         <View style={{ position: "absolute", left: 5 }}>
           <Text
@@ -80,7 +82,7 @@ const crediCardStyle = StyleSheet.create({
   lineStyle: {
     height: StyleSheet.hairlineWidth,
     width: phoneWidth - 150,
-    backgroundColor: "darkblue",
+    // backgroundColor: "darkgreen",
   },
 });
 

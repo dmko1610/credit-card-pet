@@ -8,7 +8,9 @@ const CardholderName = ({ style }) => {
   return <Text style={style}>{cardholderName}</Text>;
 };
 
-const ExpireDate = ({ expiredMonth, expiredYear, style }) => {
+const ExpireDate = ({ style }) => {
+  const expiredMonth = useSelector((state) => state.root.expiredMonth);
+  const expiredYear = useSelector((state) => state.root.expiredYear);
   return (
     <Text style={style}>
       {expiredMonth}/{expiredYear}
@@ -16,7 +18,7 @@ const ExpireDate = ({ expiredMonth, expiredYear, style }) => {
   );
 };
 
-const ExpirationBlock = ({ expiredMonth, expiredYear }) => {
+const ExpirationBlock = () => {
   const {
     commonText,
     expireDate,
@@ -28,24 +30,17 @@ const ExpirationBlock = ({ expiredMonth, expiredYear }) => {
       <Text style={StyleSheet.flatten([commonText, expirationBlockTitle])}>
         month/year
       </Text>
-      <ExpireDate
-        expiredMonth={expiredMonth}
-        expiredYear={expiredYear}
-        style={StyleSheet.flatten([commonText, expireDate])}
-      />
+      <ExpireDate style={StyleSheet.flatten([commonText, expireDate])} />
     </View>
   );
 };
 
-export const BottomRow = ({ cardholderName, expiredMonth, expiredYear }) => {
+export const BottomRow = () => {
   const { commonText, cardholder, bottomRowContainer } = bottomRowStyle;
   return (
     <View style={bottomRowContainer}>
-      <CardholderName
-        cardholderName={cardholderName}
-        style={StyleSheet.flatten([commonText, cardholder])}
-      />
-      <ExpirationBlock expiredMonth={expiredMonth} expiredYear={expiredYear} />
+      <CardholderName style={StyleSheet.flatten([commonText, cardholder])} />
+      <ExpirationBlock />
     </View>
   );
 };
@@ -81,23 +76,9 @@ const bottomRowStyle = StyleSheet.create({
 });
 
 CardholderName.propTypes = {
-  cardholderName: PropTypes.string,
   style: PropTypes.style,
 };
 
-BottomRow.propTypes = {
-  cardholderName: PropTypes.string,
-  expiredMonth: PropTypes.string,
-  expiredYear: PropTypes.string,
-};
-
-ExpirationBlock.propTypes = {
-  expiredMonth: PropTypes.string,
-  expiredYear: PropTypes.string,
-};
-
 ExpireDate.propTypes = {
-  expiredMonth: PropTypes.string,
-  expiredYear: PropTypes.string,
   style: PropTypes.style,
 };

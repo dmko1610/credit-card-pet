@@ -8,24 +8,9 @@ export const MainScreen = () => {
   const cardRotationAnim = React.useRef(new Animated.Value(0)).current;
   const revertRotationAnim = React.useRef(new Animated.Value(0)).current;
 
-  const [cardNumber, setCardNumber] = React.useState("");
-  const [cardholderName, setCardholderName] = React.useState("");
-  const [expiredMonth, setExpiredMonth] = React.useState("");
-  const [expiredYear, setExpiredYear] = React.useState("");
   const [isCvvFocused, setCvvFocused] = React.useState(false);
-  const [cvvCode, setCvvCode] = React.useState("");
-
-  const getCardNumber = (data) => setCardNumber(data);
-
-  const getCardholderName = (data) => setCardholderName(data);
-
-  const getExpiredMonth = (data) => setExpiredMonth(data);
-
-  const getExpiredYear = (data) => setExpiredYear(data);
 
   const getCvvFocused = (data) => setCvvFocused(data);
-
-  const getCvvCode = (data) => setCvvCode(data);
 
   React.useEffect(() => {
     if (isCvvFocused) {
@@ -64,7 +49,7 @@ export const MainScreen = () => {
     ]);
 
   return (
-    <ScrollView contentContainerStyle={mainScreenStyles.containerStyle}>
+    <View style={mainScreenStyles.containerStyle}>
       <Animated.View
         style={{
           transform: [
@@ -77,12 +62,7 @@ export const MainScreen = () => {
           ],
         }}
       >
-        <Card
-          cardNumber={cardNumber}
-          cardholderName={cardholderName}
-          expiredMonth={expiredMonth}
-          expiredYear={expiredYear}
-        />
+        <Card />
       </Animated.View>
       <Animated.View
         style={{
@@ -99,19 +79,12 @@ export const MainScreen = () => {
           ],
         }}
       >
-        <RevertCard cvvCode={cvvCode} />
+        <RevertCard />
       </Animated.View>
       <View>
-        <Control
-          cardNumberCb={getCardNumber}
-          cardholderNameCb={getCardholderName}
-          monthCb={getExpiredMonth}
-          yearCb={getExpiredYear}
-          cvvFocusedCb={getCvvFocused}
-          cvvCodeCb={getCvvCode}
-        />
+        <Control cvvFocusedCb={getCvvFocused} />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
