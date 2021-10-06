@@ -9,7 +9,7 @@ export const MainScreen = () => {
   const cardRotationAnim = React.useRef(new Animated.Value(0)).current;
   const revertRotationAnim = React.useRef(new Animated.Value(0)).current;
 
-  const isCvvCodeFocused = useSelector((state) => state.root.isCvvCodeFocused);
+  const isCvvCodeFocused = useSelector((state) => state.focus.isCvvFocused);
 
   React.useEffect(() => {
     if (isCvvCodeFocused) {

@@ -11,10 +11,13 @@ import {
   changeCvvCode,
   changeExpiredMonth,
   changeExpiredYear,
-  toggleCvvCodeFocus,
-  toggleCvvFocus,
-  toggleCvvFocuse,
 } from "../actions/RootActions";
+import {
+  toggleCvvCodeFocus,
+  toggleDateFocus,
+  toggleNameFocus,
+  toggleNumberFocus,
+} from "../actions/FocusActions";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
 const phoneHeight = Math.round(Dimensions.get("window").height);
@@ -48,7 +51,11 @@ function getYears() {
   return years;
 }
 
-const CardNumber = ({ onChangeNumber, onSubmitEditing }) => {
+const CardNumber = ({
+  onChangeNumber,
+  onSubmitEditing,
+  toggleNumberFocused,
+}) => {
   const [formattedCardNumber, setCardNumber] = useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
@@ -57,6 +64,11 @@ const CardNumber = ({ onChangeNumber, onSubmitEditing }) => {
     }
     setCardNumber(value);
     onChangeNumber(value);
+  };
+
+  const onSubmit = () => {
+    onSubmitEditing();
+    toggleNumberFocused(false);
   };
 
   return (
@@ -68,19 +80,22 @@ const CardNumber = ({ onChangeNumber, onSubmitEditing }) => {
       maxLength={19}
       value={formattedCardNumber}
       onChange={onChange}
-      onSubmitEditing={onSubmitEditing}
+      onSubmitEditing={onSubmit}
+      onFocus={() => toggleNumberFocused(true)}
+      onBlur={() => toggleNumberFocused(false)}
     />
   );
 };
 
 const CardholderName = React.forwardRef(
-  ({ onChangeName, onSubmitEditing }, ref) => {
+  ({ onChangeName, toggleNameFocused }, ref) => {
     const [value, setValue] = React.useState("");
     const onChange = (event) => {
       let value = event.nativeEvent.text;
       setValue(value);
       onChangeName(value);
     };
+
     return (
       <TextInput
         ref={ref}
@@ -90,19 +105,26 @@ const CardholderName = React.forwardRef(
         autoCapitalize={"characters"}
         onChange={onChange}
         value={value}
-        onSubmitEditing={onSubmitEditing}
+        onSubmitEditing={() => toggleNameFocused(false)}
+        onFocus={() => toggleNameFocused(true)}
+        onBlur={() => toggleNameFocused(false)}
       />
     );
   }
 );
 
-const ExpireMonth = ({ onChangeMonth }) => {
+const ExpireMonth = ({ onChangeMonth, onExpireFocused }) => {
   const [month, setMonth] = useState("");
   const [isPressed, setIsPressed] = useState(false);
 
   const onChange = (cb) => {
     setMonth(cb());
     onChangeMonth(cb());
+  };
+
+  const onOpen = (val) => {
+    setIsPressed(val);
+    onExpireFocused(true);
   };
 
   return (
@@ -112,7 +134,7 @@ const ExpireMonth = ({ onChangeMonth }) => {
         items={months}
         open={isPressed}
         value={month}
-        setOpen={setIsPressed}
+        setOpen={onOpen}
         setValue={onChange}
         placeholder={"Month"}
         placeholderStyle={{ color: "#CCCCCC" }}
@@ -127,13 +149,19 @@ const ExpireMonth = ({ onChangeMonth }) => {
   );
 };
 
-const ExpireYear = ({ onChangeYear, onClose }) => {
+const ExpireYear = ({ onChangeYear, onSubmitted, onExpireFocused }) => {
   const [year, setYear] = useState("");
   const [isPressed, setIsPressed] = useState(false);
 
   const onChange = (cb) => {
     setYear(cb());
     onChangeYear(cb());
+  };
+
+  const onClose = () => {
+    setIsPressed(false);
+    onSubmitted();
+    onExpireFocused(false);
   };
   return (
     <View style={controlStyles.dropdownList}>
@@ -198,18 +226,34 @@ export const Control = () => {
   const changeMonth = (value) => dispatch(changeExpiredMonth(value));
   const changeYear = (value) => dispatch(changeExpiredYear(value));
   const changeCvv = (value) => dispatch(changeCvvCode(value));
+
   const toggleCvvFocus = (value) => dispatch(toggleCvvCodeFocus(value));
+  const toggleNumberFocused = (value) => dispatch(toggleNumberFocus(value));
+  const toggleNameFocused = (value) => dispatch(toggleNameFocus(value));
+  const toggleDateFocused = (value) => dispatch(toggleDateFocus(value));
 
   return (
     <View style={controlStyles.container}>
       <CardNumber
         onChangeNumber={changeNumber}
         onSubmitEditing={onNumberSubmitted}
+        toggleNumberFocused={toggleNumberFocused}
       />
-      <CardholderName onChangeName={changeName} ref={nameRef} />
+      <CardholderName
+        onChangeName={changeName}
+        ref={nameRef}
+        toggleNameFocused={toggleNameFocused}
+      />
       <View style={controlStyles.bottomRowContainer}>
-        <ExpireMonth onChangeMonth={changeMonth} />
-        <ExpireYear onChangeYear={changeYear} onClose={onYearSubmitted} />
+        <ExpireMonth
+          onChangeMonth={changeMonth}
+          onExpireFocused={toggleDateFocused}
+        />
+        <ExpireYear
+          onChangeYear={changeYear}
+          onSubmitted={onYearSubmitted}
+          onExpireFocused={toggleDateFocused}
+        />
         <SecurityCode
           onChangeCvvCode={changeCvv}
           onFocusedCvvCode={toggleCvvFocus}

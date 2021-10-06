@@ -1,62 +1,87 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 
-const CardholderName = ({ style }) => {
+const CardholderName = () => {
+  const isNameFocused = useSelector((state) => state.focus.isNameFocused);
   const cardholderName = useSelector((state) => state.root.cardholderName);
-  return <Text style={style}>{cardholderName}</Text>;
+
+  const cardholderStyle = [];
+
+  if (isNameFocused) {
+    cardholderStyle.push(styles.focusedName);
+  }
+
+  return (
+    <View style={StyleSheet.flatten(cardholderStyle)}>
+      <Text style={StyleSheet.flatten([styles.commonText, styles.cardholder])}>
+        {cardholderName}
+      </Text>
+    </View>
+  );
 };
 
-const ExpireDate = ({ style }) => {
+const ExpireDate = () => {
   const expiredMonth = useSelector((state) => state.root.expiredMonth);
   const expiredYear = useSelector((state) => state.root.expiredYear);
   return (
-    <Text style={style}>
+    <Text style={StyleSheet.flatten([styles.commonText, styles.expireDate])}>
       {expiredMonth}/{expiredYear}
     </Text>
   );
 };
 
 const ExpirationBlock = () => {
+  const isExpiredDateFocused = useSelector(
+    (state) => state.focus.isExpiredDateFocused
+  );
   const {
     commonText,
-    expireDate,
     expirationBlockTitle,
     expirationBlockContainer,
-  } = bottomRowStyle;
+    focusedExpirationBlock,
+  } = styles;
+  const blockStyle = [expirationBlockContainer];
+
+  if (isExpiredDateFocused) {
+    blockStyle.push(focusedExpirationBlock);
+  }
   return (
-    <View style={expirationBlockContainer}>
+    <View style={blockStyle}>
       <Text style={StyleSheet.flatten([commonText, expirationBlockTitle])}>
         month/year
       </Text>
-      <ExpireDate style={StyleSheet.flatten([commonText, expireDate])} />
+      <ExpireDate />
     </View>
   );
 };
 
 export const BottomRow = () => {
-  const { commonText, cardholder, bottomRowContainer } = bottomRowStyle;
   return (
-    <View style={bottomRowContainer}>
-      <CardholderName style={StyleSheet.flatten([commonText, cardholder])} />
+    <View style={styles.bottomRowContainer}>
+      <CardholderName />
       <ExpirationBlock />
     </View>
   );
 };
 
-const bottomRowStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   bottomRowContainer: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 10,
   },
+  focusedName: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+    borderRadius: 10,
+    marginRight: 10,
+  },
   cardholder: {
     fontSize: 20,
     letterSpacing: 5,
-    paddingBottom: 5,
-    alignSelf: "flex-end",
+    paddingTop: 5,
   },
   expireDate: {
     fontSize: 17,
@@ -73,12 +98,10 @@ const bottomRowStyle = StyleSheet.create({
   expirationBlockContainer: {
     alignSelf: "flex-end",
   },
+  focusedExpirationBlock: {
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+    borderRadius: 10,
+    padding: 5
+  },
 });
-
-CardholderName.propTypes = {
-  style: PropTypes.style,
-};
-
-ExpireDate.propTypes = {
-  style: PropTypes.style,
-};

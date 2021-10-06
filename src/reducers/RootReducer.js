@@ -6,7 +6,13 @@ const INITIAL_STATE = {
   expiredMonth: "",
   expiredYear: "",
   cvvCode: "",
+};
+
+const FOCUSING_STATE = {
   isCvvFocused: false,
+  isNumberFocused: false,
+  isNameFocused: false,
+  isExpiredDateFocused: false,
 };
 
 const rootReducer = (state = INITIAL_STATE, action) => {
@@ -36,10 +42,32 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cvvCode: action.payload,
       };
-    case "TOGGLE_CVV":
+    default:
+      return state;
+  }
+};
+
+const focusReducer = (state = FOCUSING_STATE, action) => {
+  switch (action.type) {
+    case "TOGGLE_CVV_FOCUS":
       return {
         ...state,
-        isCvvCodeFocused: action.payload,
+        isCvvFocused: action.payload,
+      };
+    case "TOGGLE_NUMBER_FOCUS":
+      return {
+        ...state,
+        isNumberFocused: action.payload,
+      };
+    case "TOGGLE_NAME_FOCUS":
+      return {
+        ...state,
+        isNameFocused: action.payload,
+      };
+    case "TOGGLE_DATE_FOCUS":
+      return {
+        ...state,
+        isExpiredDateFocused: action.payload,
       };
     default:
       return state;
@@ -48,4 +76,5 @@ const rootReducer = (state = INITIAL_STATE, action) => {
 
 export default combineReducers({
   root: rootReducer,
+  focus: focusReducer,
 });

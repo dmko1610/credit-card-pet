@@ -22,8 +22,3 @@ export const changeCvvCode = (value) => ({
   type: "CHANGE_CVV",
   payload: value,
 });
-
-export const toggleCvvCodeFocus = (value) => ({
-  type: "TOGGLE_CVV",
-  payload: value,
-});

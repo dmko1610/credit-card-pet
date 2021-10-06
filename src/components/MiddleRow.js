@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 
-const BankIdentificationNumber = ({ bin, number }) => {
-  return <Text style={number}>{bin}</Text>;
+const BankIdentificationNumber = ({ bin }) => {
+  return <Text style={styles.number}>{bin}</Text>;
 };
 
 /* const AccountIdentifierNumber = ({}) => {
@@ -13,21 +13,31 @@ const BankIdentificationNumber = ({ bin, number }) => {
 
 const MiddleRow = () => {
   const cardNumber = useSelector((state) => state.root.cardNumber);
-  const { middleRowContainer, number } = middleRowStyle;
+  const isNumberFocused = useSelector((state) => state.focus.isNumberFocused);
+  const containerStyle = [styles.middleRowContainer];
+  if (isNumberFocused) {
+    containerStyle.push(styles.focusedContainer);
+  }
   return (
-    <View style={middleRowContainer}>
-      <BankIdentificationNumber number={number} bin={cardNumber} />
+    <View style={StyleSheet.flatten(containerStyle)}>
+      <BankIdentificationNumber bin={cardNumber} />
       {/* <AccountIdentifierNumber style={number} /> */}
     </View>
   );
 };
 
-const middleRowStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   middleRowContainer: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 10,
+  },
+  focusedContainer: {
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+    borderRadius: 10,
   },
   number: {
     letterSpacing: 2,
@@ -39,7 +49,6 @@ const middleRowStyle = StyleSheet.create({
 
 BankIdentificationNumber.propTypes = {
   bin: PropTypes.string,
-  number: PropTypes.style,
 };
 
 export default MiddleRow;
