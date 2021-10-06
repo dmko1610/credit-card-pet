@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   expiredMonth: "",
   expiredYear: "",
   cvvCode: "",
+  paySystem: "",
 };
 
 const FOCUSING_STATE = {

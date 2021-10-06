@@ -16,7 +16,6 @@ export const Card = () => {
   const backgroundThemeUrl = useSelector(
     (state) => state.theme.backgroundThemeUrl
   );
-  console.log("baaa ", backgroundThemeUrl);
   return (
     <ImageBackground
       source={{
