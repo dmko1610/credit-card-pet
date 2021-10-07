@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   Dimensions,
   StyleSheet,
@@ -10,63 +9,40 @@ import {
 import { useSelector } from "react-redux";
 
 const phoneWidth = Math.round(Dimensions.get("screen").width);
-const abstract = require("../assets/abstract.jpg");
-// const tree = require("../assets/tree.jpg");
 
 export const RevertCard = () => {
   const cvvCode = useSelector((state) => state.root.cvvCode);
   const backgroundThemeUrl = useSelector(
     (state) => state.theme.backgroundThemeUrl
   );
+
+  const {
+    cardContainer,
+    image,
+    blackSquare,
+    whiteSquare,
+    cvvContainer,
+    cvvCodeStyle,
+    bottomRowContainer,
+  } = creditCardStyle;
   return (
     <ImageBackground
       source={{ uri: backgroundThemeUrl }}
-      style={crediCardStyle.cardContainer}
-      imageStyle={crediCardStyle.image}
+      style={cardContainer}
+      imageStyle={image}
     >
-      <View
-        style={{ height: 40, width: phoneWidth - 60, backgroundColor: "black" }}
-      />
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-start",
-        }}
-      >
-        <View
-          style={{
-            height: 40,
-            width: phoneWidth - 100,
-            backgroundColor: "white",
-            justifyContent: "space-around",
-            alignItems: "flex-end",
-          }}
-        >
-          {[1, 2, 3, 4, 5, 6].map((index) => line(index))}
-        </View>
-        <View style={{ position: "absolute", left: 5 }}>
-          <Text
-            style={{
-              transform: [{ rotateY: "180deg" }],
-              fontSize: 20,
-              fontFamily: "Roboto",
-              letterSpacing: 2,
-            }}
-          >
-            {cvvCode}
-          </Text>
+      <View style={blackSquare} />
+      <View style={bottomRowContainer}>
+        <View style={whiteSquare} />
+        <View style={cvvContainer}>
+          <Text style={cvvCodeStyle}>{cvvCode}</Text>
         </View>
       </View>
     </ImageBackground>
   );
 };
 
-const line = (index) => {
-  return <View key={index} style={crediCardStyle.lineStyle} />;
-};
-
-const crediCardStyle = StyleSheet.create({
+const creditCardStyle = StyleSheet.create({
   cardContainer: {
     transform: [{ rotateY: "180deg" }],
     width: phoneWidth - 60,
@@ -85,10 +61,32 @@ const crediCardStyle = StyleSheet.create({
   lineStyle: {
     height: StyleSheet.hairlineWidth,
     width: phoneWidth - 150,
-    // backgroundColor: "darkgreen",
+  },
+  blackSquare: {
+    height: 40,
+    width: phoneWidth - 60,
+    backgroundColor: "black",
+  },
+  whiteSquare: {
+    height: 40,
+    width: phoneWidth - 100,
+    backgroundColor: "white",
+    justifyContent: "space-around",
+    alignItems: "flex-end",
+  },
+  bottomRowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  cvvContainer: {
+    position: "absolute",
+    left: 5,
+  },
+  cvvCodeStyle: {
+    transform: [{ rotateY: "180deg" }],
+    fontSize: 20,
+    fontFamily: "Roboto",
+    letterSpacing: 2,
   },
 });
-
-RevertCard.propTypes = {
-  cvvCode: PropTypes.string,
-};

@@ -59,9 +59,6 @@ const CardNumber = ({
   const [formattedCardNumber, setCardNumber] = useState("");
   const onChange = (event) => {
     let value = event.nativeEvent.text;
-    if (value.length === 4 || value.length === 9 || value.length === 14) {
-      value = value + " ";
-    }
     setCardNumber(value);
     onChangeNumber(value);
   };
@@ -77,7 +74,7 @@ const CardNumber = ({
       placeholderTextColor="#b7b7b7"
       style={controlStyles.inputStyle}
       keyboardType={"decimal-pad"}
-      maxLength={19}
+      maxLength={16}
       value={formattedCardNumber}
       onChange={onChange}
       onSubmitEditing={onSubmit}
@@ -280,7 +277,7 @@ const controlStyles = StyleSheet.create({
     flexDirection: "row",
   },
   dropdownList: {
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     marginVertical: 20,
     flex: 1,
   },

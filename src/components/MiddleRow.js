@@ -1,15 +1,38 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { View, Text, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 
-const BankIdentificationNumber = ({ bin }) => {
-  return <Text style={styles.number}>{bin}</Text>;
+const FirstQuarter = ({ number }) => {
+  let result = "####";
+  if (number) {
+    result = number.concat(result.slice(number.length));
+  }
+  return <Text style={styles.number}>{result}</Text>;
 };
 
-/* const AccountIdentifierNumber = ({}) => {
-  return <Text>78 9876 5432</Text>;
-}; */
+const SecondQuarter = ({ number }) => {
+  let result = "####";
+  if (number) {
+    result = number.concat(result.slice(number.length));
+  }
+  return <Text style={styles.number}>{result}</Text>;
+};
+
+const ThirdQuarter = ({ number }) => {
+  let result = "####";
+  if (number) {
+    result = number.concat(result.slice(number.length));
+  }
+  return <Text style={styles.number}>{result}</Text>;
+};
+
+const FourthQuarter = ({ number }) => {
+  let result = "####";
+  if (number) {
+    result = number.concat(result.slice(number.length));
+  }
+  return <Text style={styles.number}>{result}</Text>;
+};
 
 const MiddleRow = () => {
   const cardNumber = useSelector((state) => state.root.cardNumber);
@@ -20,8 +43,10 @@ const MiddleRow = () => {
   }
   return (
     <View style={StyleSheet.flatten(containerStyle)}>
-      <BankIdentificationNumber bin={cardNumber} />
-      {/* <AccountIdentifierNumber style={number} /> */}
+      <FirstQuarter number={cardNumber.slice(0, 4)} />
+      <SecondQuarter number={cardNumber.slice(4, 8)} />
+      <ThirdQuarter number={cardNumber.slice(8, 12)} />
+      <FourthQuarter number={cardNumber.slice(12)} />
     </View>
   );
 };
@@ -35,6 +60,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   focusedContainer: {
+    paddingHorizontal: 10,
     borderWidth: 2,
     borderColor: "#FFFFFF",
     borderRadius: 10,
@@ -45,11 +71,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     fontFamily: "FiraCode",
+    paddingHorizontal: 8,
   },
 });
-
-BankIdentificationNumber.propTypes = {
-  bin: PropTypes.string,
-};
 
 export default MiddleRow;
