@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   focusedContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     borderWidth: 2,
     borderColor: "#FFFFFF",
     borderRadius: 10,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     fontFamily: "FiraCode",
-    paddingHorizontal: 8,
+    paddingHorizontal: 5,
   },
 });
 

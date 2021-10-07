@@ -284,7 +284,7 @@ const controlStyles = StyleSheet.create({
   inputStyle: {
     borderWidth: 0.5,
     borderColor: "gray",
-    marginHorizontal: 15,
+    marginHorizontal: 12,
     borderRadius: 5,
     marginVertical: 20,
   },
